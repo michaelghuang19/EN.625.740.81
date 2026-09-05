@@ -23,22 +23,75 @@
 {\Large 
 
 \section*{1.}
-Overfitting of polynomial matching: We have shown that the predictor defined in Equation (2.3) leads to overfitting. While this predictor seems to be very unnatural, the goal of this exercise is to show that it can be described as a thresholded polynomial.
+Overfitting of polynomial matching: We have shown that the predictor defined in Equation (2.3) leads to overfitting. While this predictor seems to be very unnatural, the goal of this exercise is to show that it can be described as a thresholded polynomial. That is, show that given a training set \(S = \{(x_i, f(x_i))\}_{i=1}^m \subseteq (\mathbb{R}^d \times \{0,1\})^m\), there exists a polynomial \(p_S\) such that \(h_S(x) = 1\) if and only if \(p_S(x) \geq 0\), where \(h_S\) is as defined in Equation (2.3). It follows that learning the class of all thresholded polynomials using the ERM rule may lead to overfitting.
 \\ \\
+asdf
 
 }
 {\Large 
 
 \section*{2.}
-Let \(H\) be a class of binary classifiers over a domain \(X\). Let \(D\) be an unknown distribution over \(X\), and let \(f\) be the target hypothesis in \(H\).
-\\ \\
+Let \(H\) be a class of binary classifiers over a domain \(X\). Let \(D\) be an unknown distribution over \(X\), and let \(f\) be the target hypothesis in \(H\). Fix some \(h \in H\). Show that the expected value of \(L_S(h)\) over the choice of \(S|_x\) equals \(L_{(D,f)}(h)\), namely,
+\[
+  \underset{S|_x \sim D^m}{\mathbb{E}} [L_S(h)] = L_{(D,f)}(h).
+\]
+\\
+The training error is defined as 
+\[
+  L_S(h) = \frac{|\{ i \in [m] : h(x_i) \neq y_i \}|}{m}
+\]
+and \(L_{D, f} (h)\) is the true error. We can simplify this computationally by expressing success as Bernoulli variables, i.e. we count "1" for a successful classification, and "0" for an erroneous classification. We an therefore represent \(L_S(h)\) as \[
+  L_S(h) = \frac{1}{m} \sum_{i=1}^{m} \{ h(x_i) \neq f(x_i) \} 
+\]
+We take the overall expectation:
+\[
+  \underset{S|_x \sim D^m}{\mathbb{E}} [L_S(h)] = \underset{S|_x \sim D^m}{\mathbb{E}} [ \frac{1}{m} \sum_{i=1}^{m} \{ h(x_i) \neq f(x_i) \} ]
+\]
+By linearity of expectation:
+\[
+  = \frac{1}{m} \sum_{i=1}^{m} \underset{S|_x \sim D^m}{\mathbb{E}} [\{ h(x_i) \neq f(x_i) \} ]
+\]
+To evaluate the expectation component, we know that each \(x_i\) follows the distribution \(D\), so we can evaluate this expectation of a singular instance \(i\) by taking the probability essentially just taking the probability that \( h(x_i) \neq f(x_i)\) at that instance \(i\), or that
+\[ 
+  E \left[ \{h(x_i)\neq f(x_i)\} \right] = Prob_{x_i\sim D}\bigl[h(x_i)\neq f(x_i)\bigr]. 
+\]
+the latter of which we note is just the definition of the true error, \(L_{D, f(h)}\). So we have that 
+\[
+  \underset{S|_x \sim D^m}{\mathbb{E}} [L_S(h)] = \frac{1}{m} \sum_{i=1}^{m} L_{D, f(h)}
+\]
+\[
+  \boxed{\underset{S|_x \sim D^m}{\mathbb{E}} [L_S(h)] = L_{D, f(h)}}
+\]
+exactly as we sought to find.
 
 }
 {\Large 
 
 \section*{3.}
-Axis aligned rectangles: An axis aligned rectangle classifier in the plane is a classifier that assigns the value 1 to a point if and only if it is inside a certain rectangle.
+Axis aligned rectangles: An axis aligned rectangle classifier in the plane is a classifier that assigns the value 1 to a point if and only if it is inside a certain rectangle...
+
+\subsection*{1.}
+Let $A$ be the algorithm that returns the smallest rectangle enclosing all positive examples in the training set. Show that $A$ is an ERM.
+
+
+\subsection*{2.}
+Show that if $A$ receives a training set of size $\ge \frac{4 \log(4/\delta)}{\epsilon}$ then, with probability of at least $1 - \delta$ it returns a hypothesis with error of at most $\epsilon$.
+   \textit{Hint:} Fix some distribution $\mathcal{D}$ over $\mathcal{X}$, let $R^* = R(a_1^*, b_1^*, a_2^*, b_2^*)$ be the rectangle that generates the labels, and let $f$ be the corresponding hypothesis. Let $a_1 \ge a_1^*$ be a number such that the probability mass (with respect to $\mathcal{D}$) of the rectangle $R_1 = R(a_1^*, a_1, a_2^*, b_2^*)$ is exactly $\epsilon/4$. Similarly, let $b_1, a_2, b_2$ be numbers such that the probability masses of the rectangles $R_2 = R(b_1, b_1^*, a_2^*, b_2^*), R_3 = R(a_1^*, b_1^*, a_2^*, a_2), R_4 = R(a_1^*, b_1^*, b_2, b_2^*)$ are all exactly $\epsilon/4$. Let $R(S)$ be the rectangle returned by $A$. See illustration in Figure 2.2.
+   \begin{itemize}
+       \item Show that $R(S) \subseteq R^*$.
+       \item Show that if $S$ contains (positive) examples in all of the rectangles $R_1, R_2, R_3, R_4$, then the hypothesis returned by $A$ has error of at most $\epsilon$.
+       \item For each $i \in \{1, \dots, 4\}$, upper bound the probability that $S$ does not contain an example from $R_i$.
+       \item Use the union bound to conclude the argument.
+   \end{itemize}
+
+
+\subsection*{3.}
+Repeat the previous question for the class of axis aligned rectangles in $\mathbb{R}^d$.
+
+\subsection*{4.}
+Show that the runtime of applying the algorithm $A$ mentioned earlier is polynomial in $d, 1/\epsilon$, and in $\log(1/\delta)$.
 \\ \\
+
 
 }
 
