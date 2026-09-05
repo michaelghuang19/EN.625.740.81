@@ -25,7 +25,26 @@
 \section*{1.}
 Overfitting of polynomial matching: We have shown that the predictor defined in Equation (2.3) leads to overfitting. While this predictor seems to be very unnatural, the goal of this exercise is to show that it can be described as a thresholded polynomial. That is, show that given a training set \(S = \{(x_i, f(x_i))\}_{i=1}^m \subseteq (\mathbb{R}^d \times \{0,1\})^m\), there exists a polynomial \(p_S\) such that \(h_S(x) = 1\) if and only if \(p_S(x) \geq 0\), where \(h_S\) is as defined in Equation (2.3). It follows that learning the class of all thresholded polynomials using the ERM rule may lead to overfitting.
 \\ \\
-asdf
+The predictor defined in Equation (2.3) is the following:
+\[
+  h_S(x) = 
+  \begin{cases} 
+    y_i & \text{if } \exists i \in [m] \text{ s.t. } x_i = x \\ 
+    0 & \text{otherwise.} 
+  \end{cases}
+\]
+which basically just predicts based on successful training set predictions. In other words, we have that \(h_S(x)\) is a perfect predictor on any point that was within the training data, and is 0 otherwise. To construct a polynomial \(p_S\) to emulate this, we need to ensure that \(p_S\) is nonnegative at every training point, and negative otherwise, as stated in the problem. \\ \\
+A very convenient expression that works for expressing this is in one-dimensional space is the polynomial \(-(x-x_i)^2\), where we see that this is 0 when \(x = x_i\), which satisfies the nonnegative requirement, and is clearly negative when \(x \neq x_i\). \\ \\
+To extend this to \(d\) dimensions as with training set \(\mathbb{R}^d\), we simply extend \(x = (x_1, \dots, x_d)\) with \(x_i = (x_1i, \dots, x_di)\). With \(d\) dimensions, we can still emulate the behavior as with our prior one-dimensional building block expression, i.e. we can take the sum of all elements \((x_j - x_{ij})^2\) and this will give us our 0 sum when \(x = x_i\), except now in \(d\) dimensions. This is fine as a one-hot indicator of whether \(x = x_i\), and we can fix the negative behavior later. \\ \\
+It's possible (and very likely) that we have multiple training points, so we want to indicate a hit on any of these. To do this, we can take the product of this polynomial, that is, 
+\[
+  \prod (\sum_{j = 1}^{d} (x_j - x_{ij})^2)
+\]
+which returns 0 if we hit on any \(x = x_i\) for some \(i\) in the training set. We then fix that this indicates a positive value for all misses on the training set by adding a negative sign, which gives us 
+\[
+  \boxed{p_S = -\prod (\sum_{j = 1}^{d} (x_j - x_{ij})^2)}
+\]
+Reflecting on the last statement of the problem, we can see that the predictor, in classifying every training example correctly, has training error of 0, and therefore could be selected by ERM because there is no empirical error less than 0, so it appears that this predictor is incredibly good by the ERM rule. The clear issue that arises from the selection of this predictor is that it will perform perfectly on any point within a training set, but given some finite number of training variables, it is possible (and very likely) that the true error will be higher as it evaluates data points outside of the training set. We can therefore see that the class of thresholded polynomials from the predictor selected using the ERM rule indeed can lead to overfitting.
 
 }
 {\Large 
