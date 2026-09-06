@@ -90,27 +90,96 @@ exactly as we sought to find.
 Axis aligned rectangles: An axis aligned rectangle classifier in the plane is a classifier that assigns the value 1 to a point if and only if it is inside a certain rectangle...
 
 \subsection*{1.}
-Let $A$ be the algorithm that returns the smallest rectangle enclosing all positive examples in the training set. Show that $A$ is an ERM.
-
+Let \(A\) be the algorithm that returns the smallest rectangle enclosing all positive examples in the training set. Show that \(A\) is an ERM. \\ \\
+Given that \(A(S)\) returns the smallest rectangle enclosing all positive examples, we must have that \(L_S(A(S)) = 0\), that is, the training error of the algorithm is 0. This is because the construction of \(A\) itself requires that the corresponding rectangle includes every positive training point, and all negative points therefore must lie outside the corresponding rectangle. So every negative point is outside the rectangle, and every positive point is within the rectangle, giving us a training error of 0. As this is the minimum possible training error, we can say that \(A\) fulfills the criteria to be selected using ERM.
 
 \subsection*{2.}
-Show that if $A$ receives a training set of size $\ge \frac{4 \log(4/\delta)}{\epsilon}$ then, with probability of at least $1 - \delta$ it returns a hypothesis with error of at most $\epsilon$.
-   \textit{Hint:} Fix some distribution $\mathcal{D}$ over $\mathcal{X}$, let $R^* = R(a_1^*, b_1^*, a_2^*, b_2^*)$ be the rectangle that generates the labels, and let $f$ be the corresponding hypothesis. Let $a_1 \ge a_1^*$ be a number such that the probability mass (with respect to $\mathcal{D}$) of the rectangle $R_1 = R(a_1^*, a_1, a_2^*, b_2^*)$ is exactly $\epsilon/4$. Similarly, let $b_1, a_2, b_2$ be numbers such that the probability masses of the rectangles $R_2 = R(b_1, b_1^*, a_2^*, b_2^*), R_3 = R(a_1^*, b_1^*, a_2^*, a_2), R_4 = R(a_1^*, b_1^*, b_2, b_2^*)$ are all exactly $\epsilon/4$. Let $R(S)$ be the rectangle returned by $A$. See illustration in Figure 2.2.
-   \begin{itemize}
-       \item Show that $R(S) \subseteq R^*$.
-       \item Show that if $S$ contains (positive) examples in all of the rectangles $R_1, R_2, R_3, R_4$, then the hypothesis returned by $A$ has error of at most $\epsilon$.
-       \item For each $i \in \{1, \dots, 4\}$, upper bound the probability that $S$ does not contain an example from $R_i$.
-       \item Use the union bound to conclude the argument.
-   \end{itemize}
+Show that if \(A\) receives a training set of size \(\geq \frac{4 \log(4/\delta)}{\epsilon}\) then, with probability of at least \(1 - \delta\) it returns a hypothesis with error of at most \(\epsilon\).
+%    \textit{Hint:} Fix some distribution $\mathcal{D}$ over $\mathcal{X}$, let $R^* = R(a_1^*, b_1^*, a_2^*, b_2^*)$ be the rectangle that generates the labels, and let $f$ be the corresponding hypothesis. Let $a_1 \ge a_1^*$ be a number such that the probability mass (with respect to $\mathcal{D}$) of the rectangle $R_1 = R(a_1^*, a_1, a_2^*, b_2^*)$ is exactly $\epsilon/4$. Similarly, let $b_1, a_2, b_2$ be numbers such that the probability masses of the rectangles $R_2 = R(b_1, b_1^*, a_2^*, b_2^*), R_3 = R(a_1^*, b_1^*, a_2^*, a_2), R_4 = R(a_1^*, b_1^*, b_2, b_2^*)$ are all exactly $\epsilon/4$. Let $R(S)$ be the rectangle returned by $A$. See illustration in Figure 2.2.
 
+\begin{itemize}
+  \item Show that \(R(S) \subseteq R^*\).
+  \item Show that if \(S\) contains (positive) examples in all of the rectangles \(R_1, R_2, R_3, R_4\), then the hypothesis returned by \(A\) has error of at most \(\epsilon\).
+  \item For each \(i \in \{1, \dots, 4\}\), upper bound the probability that \(S\) does not contain an example from \(R_i\).
+  \item Use the union bound to conclude the argument.
+\end{itemize}
+We first take the suggestion of the hint to construct \(R^*, f\), and \(R_1, R_2, R_3, R_4\), and thus \(R(S)\) accordingly. Our goal here is to essentially prove that if \(m \geq \frac{4 \log (4 / \delta)}{\epsilon}\), then with probability of at least \(1 - \delta\) it gives us \(L_{D, f} (A(S)) \leq \epsilon \). \\ \\
+To show that \(R(S) \subseteq R^*\), we use the realizability assumption, with every training example being a positive exactly when it lies in \(R^*\). The boundaries of \(R(S)\) are therefore bounded by the extremes of each positive example \(x_{ij}\), so we know that \(a_1^* \leq x_{i1} \leq b_1^*\) and \(a_2^* \leq x_{i2} \leq b_2^*\). By this, we also know that \(a_1^* \leq a_1 \leq b_1 \leq b_1^*\) and \(a_2^* \leq a_2 \leq b_2 \leq b_2^*\), so every point in \(R(S)\) must therefore be contained within \(R^*\), which shows \(R(S) \subseteq R^*\). \\ \\
+Next, we've constructed the regions such that the probability masses are exactly \(\epsilon / 4\). By definition, we know that true error of the hypothesis returned by \(A\) is equal to the proabbility mass of the part of the distribution rectangle \(R^*\) not contained by the algorithm's returned rectangel, \(R(S)\). We've defined the 4 \(R_i\) such that any point in any of them would be included in one of the four learned rectangles: \\
+- A point in \(R_1\), the left-side rectangle, would force the algorithm's learned left boundary to be left enough to include the point. \\
+- A point in \(R_2\), the right-side rectangle, would force the algorithm's learned right boundary right enough to include the point. \\
+- A point in \(R_3\), the bottom-side rectangle, would force the algorithm's learned bottom boundary down enough to include the point. \\
+- A point in \(R_4\), the top-side rectangle, would force the algorithm's learned top boundary upwards enough to include the point. \\
+We can therefore say that any part of \(R^*\) that is missing from \(R(S)\) must lie in one of those constructed rectangles. 
+We therefore have that the total error of the algorithm is the probability mass of the union of those rectangle areas, which we know to equally contain \(\epsilon / 4\), so with 4 rectangles that gives us an error maximized at \(\epsilon\) (there might be an overlap, so the error could feasibly be lower), as we sought to show. \\ \\
+Next, upper bounding the probability that \(S\) does not contain an example from \(R_i\) for each \(i \in \{1, \dots, 4\}\). Given that the error probability mass of \(R_i\) is \(\epsilon / 4\), then one drawn example will miss with probability \(1 - \frac{\epsilon}{4}\). Extrapolating this to independent draws from all 4 regions, the probability that all \(m\) samples miss is \((1 - \frac{\epsilon}{4})^m\). We use the tightest upper bound here using the knowledge that \(1 + x \leq e^x\), so equivalently \((1-x)^r \leq e^{-xr}\), so a good upper bound is therefore \(e^{\frac{-\epsilon m}{4}}\). \\ \\
+Finally, we use the union bound to conclude the argument. From what we previously found, if \(S\) contains positive examples in all of those constructed rectangles, the error would be at most \(\epsilon\), so if the error is greater, then we must have missed at least one strip. Applying the upper bound, this would be 
+\[
+  \sum_{i=1}^{4} e^{\frac{-\epsilon m}{4}} = 4e^{\frac{-\epsilon m}{4}}
+\]
+We solve for the training set size \(m\) with the restriction of failure probability at most \(\delta\) (inverting the problem statement with probability of at least \(1 - \delta\) with error at most \(\epsilon\)):
+\[
+  4e^{\frac{-\epsilon m}{4}} \leq \delta
+\]
+\[
+  e^{\frac{-\epsilon m}{4}} \leq \frac{\delta}{4}
+\]
+\[
+  \frac{-\epsilon m}{4} \leq \log(\frac{\delta}{4})
+\]
+\[
+  -\epsilon m \leq 4\log(\frac{\delta}{4})
+\]
+\[
+  m \geq \frac{4\log(\frac{4}{\delta})}{\epsilon}
+\]
+exactly as we sought to find, which indicates to us that with at least this training set size, with probability at least \(1 - \delta\), we have that the true error of the algorithm is at most \(\epsilon\).
 
 \subsection*{3.}
-Repeat the previous question for the class of axis aligned rectangles in $\mathbb{R}^d$.
+Repeat the previous question for the class of axis aligned rectangles in \(\mathbb{R}^d\). \\ \\
+To generalize to \(d\) dimensions, we have \(R^* = R(a_1^*, b_1^*, \dots, a_d^*, b_d^*)\) and \(a_i, b_i\) accordingly. We follow the same procedure. \\ \\
+To show that \(R(S) \subseteq R^*\), we use the realizability assumption, with every training example being a positive exactly when it lies in \(R^*\). The boundaries of \(R(S)\) are therefore bounded by the extremes of each positive example \(x_{ij}\), so we generally know that \(a_j^* \leq x_{ij} \leq b_j^*\). By this, we also know that \(a_j^* \leq a_j\) and  \(b_j \leq b_j^*\) so every point in \(R(S)\) must therefore be contained within \(R^*\), which shows \(R(S) \subseteq R^*\). \\ \\
+We define new boundary sections according to the hint, this time instead creating \(2d\) sections instead of 4. We can conceptualize this as one near each lower and upper boundary of \(a\) and \(b\). We can think of these regions as the following: \\
+- \(R_{i, \text{lower}} = (a_1^*, b_1^*, \dots, a_i^*, a_i, \dots, a_d^*, b_d^*)\) \\
+- \(R_{i, \text{upper}} = (a_1^*, b_1^*, \dots, b_i, b_i^*, \dots, a_d^*, b_d^*)\) \\ 
+with each one having probability mass \( \epsilon / 2d\). We've defined the sections such that some \(S\) containing examples in all of the sections would have learned boundaries for \(R(S)\) with the learned lower bound to be to be at most \(a_i\) and the learned lower bound to be at most \(b_i\) across all \(d\) dimensions. Therefore, for any single region, we equivalently have \(2d\) sections with maximum error \(\frac{\epsilon}{2d}\), and with the most error possible being that without any overlap, for a maximum total error of \(2d \cdot \frac{\epsilon}{2d} = \epsilon\). \\ \\
+Similar to before, the probability of every draw missing a single section would be \((1 - \frac{\epsilon}{2d})^m \leq e^{-\frac{\epsilon m}{2d}}\) using the property of \(e\) we used before. \\ \\
+Finally, taking the union bound, we get the total error and solving for failure probability at most \(\delta\) being
+\[
+  2d e^{-\frac{\epsilon m}{2d}} \leq \delta 
+\]
+\[
+  e^{-\frac{\epsilon m}{2d}} \leq \frac{\delta}{2d}
+\]
+\[
+  -\frac{\epsilon m}{2d} \leq \log(\frac{\delta}{2d})
+\]
+\[
+  m \geq \frac{2d \log(\frac{2d}{\delta})}{\epsilon}
+\]
+which gets us to the same conclusion as before, generalized to \(d\) dimensions.
 
 \subsection*{4.}
-Show that the runtime of applying the algorithm $A$ mentioned earlier is polynomial in $d, 1/\epsilon$, and in $\log(1/\delta)$.
-\\ \\
-
+Show that the runtime of applying the algorithm \(A\) mentioned earlier is polynomial in \(d, 1/\epsilon\), and in \(\log(1/\delta)\). \\ \\
+We start by thinking through what we do when applying \(A\). When hitting a positive example, the algorithm must look through all \(d\) coordinates to update the corresponding minimum and maximum bounds of the slab. Processing \(m\) examples therefore takes O(\(md\)) time. Using the sample size bound that we previously found, we can replace \(m\) accordingly, as we have 
+\[
+  m \geq \frac{2d \log(\frac{2d}{\delta})}{\epsilon}
+\] 
+so we have the runtime as
+\[
+  \text{O}(\frac{2d \log(\frac{2d}{\delta})}{\epsilon} \cdot d)
+\]
+Removing the integers which aren't relevant for runtime:
+\[
+  \text{O}(\frac{d \log(\frac{d}{\delta})}{\epsilon} \cdot d)
+\]
+\[
+  \text{O}(d^2 \cdot \frac{1}{\epsilon} \cdot \log(\frac{d}{\delta}))
+\]
+\[
+  \boxed{\text{O}(d^2 \cdot \frac{1}{\epsilon} \cdot (\log(d) + \log(\frac{1}{\delta})))}
+\]
+which is indeed a runtime polynomial in terms of \(d, 1/\epsilon\), and in \(\log(1/\delta)\).
 
 }
 
