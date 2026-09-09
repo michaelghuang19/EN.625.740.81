@@ -1,0 +1,109 @@
+\documentclass{article}
+\linespread{1.3}
+\usepackage[margin=50pt]{geometry}
+\usepackage{amsmath, amsthm, amssymb, amsthm, tikz, fancyhdr, float, graphicx, spverbatim, systeme}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\newcommand{\changefont}{\fontsize{15}{15}\selectfont}
+
+\fancypagestyle{firstpageheader}{
+  \fancyhead[R]{
+    \changefont
+    \parbox[t]{4cm}{ % Adjust width as needed
+      Michael Huang\\
+      EN.625.740.81\\
+      Homework N
+    }
+  }
+}
+
+\begin{document}
+
+\thispagestyle{firstpageheader}
+{\Large 
+
+\section*{1.}
+Let \(X\) have an exponential distribution
+\[
+  p(x|v) = 
+  \begin{cases}
+    v e^{-v x}, & x \geq 0 \\
+    0, & \text{otherwise.}
+  \end{cases}
+\]
+
+\subsection*{(a)} 
+Sketch \(p(x|v)\) versus \(x\) for a fixed value of the parameter \(v\). \\ \\
+
+
+\subsection*{(b)}
+Sketch \(p(x|v)\) versus \(v\), \(v > 0\) for a fixed value of \(x\). \\ \\
+
+
+\subsection*{(c)}
+Suppose that \(n\) samples \(x_1, \dots, x_n\) are drawn independently according to \(p(x|v)\). Show that the maximum likelyhood estimate for \(v\) is given by 
+\[
+  \hat{v} = \frac{1}{\frac{1}{n} \sum_{k=1}^n x_k}
+\]
+
+
+}
+{\Large 
+
+\section*{2.}
+Let \(X\) have a uniform distribution
+\[
+  p(x|v) = 
+  \begin{cases}
+    \frac{1}{v}, & 0 \leq x \leq v \\
+    0, & \text{otherwise.}
+  \end{cases}
+\]
+
+\subsection*{(a)} 
+Sketch \(p(x|v)\) versus \(v\) for an arbitrary value of \(x\). \\ \\
+
+
+\subsection*{(b)}
+Suppose that \(n\) samples \(x_1, \dots, x_n\) are drawn independently according to \(p(x|v)\). Show that the maximum likelihood estimate for \(v\) is \(\text{max}_k x_k\). \\ \\
+
+
+\subsection*{(c)}
+Find the method of moments estimator for \(v\). \\ \\
+
+
+}
+{\Large 
+
+\section*{3.}
+
+
+
+}
+{\Large 
+
+\section*{4.}
+
+\subsection*{(a)} 
+
+\subsection*{(b)}
+
+}
+{\Large 
+
+\section*{5.}
+
+}
+{\Large 
+
+\section*{6.}
+
+\subsection*{(a)} 
+
+\subsection*{(b)}
+
+\subsection*{(c)}
+
+}
+
+\end{document}
