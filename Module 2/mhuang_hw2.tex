@@ -12,7 +12,7 @@
     \parbox[t]{4cm}{ % Adjust width as needed
       Michael Huang\\
       EN.625.740.81\\
-      Homework N
+      Homework 2
     }
   }
 }
@@ -33,19 +33,74 @@ Let \(X\) have an exponential distribution
 \]
 
 \subsection*{(a)} 
-Sketch \(p(x|v)\) versus \(x\) for a fixed value of the parameter \(v\). \\ \\
-
+Sketch \(p(x|v)\) versus \(x\) for a fixed value of the parameter \(v\).
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=400pt]{1a_graph.png}
+\end{figure} 
 
 \subsection*{(b)}
-Sketch \(p(x|v)\) versus \(v\), \(v > 0\) for a fixed value of \(x\). \\ \\
-
+Sketch \(p(x|v)\) versus \(v\), \(v > 0\) for a fixed value of \(x\).
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=400pt]{1b_graph.png}
+\end{figure}  \\ \\ \\ \\ \\ \\ 
 
 \subsection*{(c)}
-Suppose that \(n\) samples \(x_1, \dots, x_n\) are drawn independently according to \(p(x|v)\). Show that the maximum likelyhood estimate for \(v\) is given by 
+Suppose that \(n\) samples \(x_1, \dots, x_n\) are drawn independently according to \(p(x|v)\). Show that the maximum likelihood estimate for \(v\) is given by 
 \[
   \hat{v} = \frac{1}{\frac{1}{n} \sum_{k=1}^n x_k}
 \]
-
+We can derive the MLE for \(v\) directly. We first write the likelihood function. Suppose \(x_1, \dots, x_n\) are independent observations drawn from the exponential distribution, as defined by \(p(x|v)\); we just multiply for a likelihood function of 
+\[
+  L(v) = \prod_{k=1}^{n} v e^{-vx_k}
+\]
+We then take the log likelihood:
+\[
+  l(v) = \ln(\prod_{k=1}^{n} v e^{-vx_k})
+\]
+\[
+  = \sum_{k=1}^{n} \ln(v e^{-vx_k})
+\]
+\[
+  = \sum_{k=1}^{n} (\ln(v) + \ln(e^{-vx_k}))
+\]
+\[
+  = \sum_{k=1}^{n} (\ln(v) - vx_k)
+\]
+\[
+  = n\ln(v) - \sum_{k=1}^{n} vx_k
+\]
+and differentiate:
+\[
+  \frac{dl}{dv} = \frac{d}{dv} (n\ln(v) - \sum_{k=1}^{n} vx_k)
+\]
+\[
+  = \frac{n}{v} - \sum_{k=1}^{n} x_k
+\]
+Verifying this is a maximum by taking the second derivative:
+\[
+  \frac{d^2l}{dv^2} = \frac{d}{dv} (\frac{n}{v} - \sum_{k=1}^{n} x_k) 
+\]
+\[
+  = -\frac{n}{v^2} - 0 = -\frac{n}{v^2}
+\]
+which we see is indeed negative as both the numerator \(n > 0\) and the denominator is also always positive; multiplying by this then gives us a negative value, so this is indeed a maximum.
+Finally, set equal to zero to solve:
+\[
+  0 = \frac{n}{v} - \sum_{k=1}^{n} x_k
+\]
+\[
+  \sum_{k=1}^{n} x_k = \frac{n}{v}
+\]
+\[
+  v = \frac{n}{\sum_{k=1}^{n} x_k}
+\]
+So we get 
+\[
+  \hat{v} =  \frac{n}{\sum_{k=1}^{n} x_k} = \frac{1}{\frac{1}{n}\sum_{k=1}^{n} x_k}
+\]
+exactly as we sought to find.
 
 }
 {\Large 
@@ -61,16 +116,57 @@ Let \(X\) have a uniform distribution
 \]
 
 \subsection*{(a)} 
-Sketch \(p(x|v)\) versus \(v\) for an arbitrary value of \(x\). \\ \\
-
+Sketch \(p(x|v)\) versus \(v\) for an arbitrary value of \(x\).
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=400pt]{2a_graph.png}
+\end{figure}
 
 \subsection*{(b)}
 Suppose that \(n\) samples \(x_1, \dots, x_n\) are drawn independently according to \(p(x|v)\). Show that the maximum likelihood estimate for \(v\) is \(\text{max}_k x_k\). \\ \\
-
+By definition, we have that 
+\[
+  L(v) = \prod_{k=1}^{n} p(x_k|v) 
+\]
+\[
+  L(v) = 
+  \begin{cases}
+    \frac{1}{v^n}, & v \geq \max_k(x_k) \\
+    0, & \text{otherwise.}
+  \end{cases}
+\]
+We note that \(\frac{1}{v^n}\) continuously decreases as \(v\) increases; we therefore must choose the smallest possible value of \(v\). We also have the restriction that \(v\) must be at least as large as the maximum \(x_k\) value, or \(\text{max}_k x_k\). We therefore have that 
+\[
+  \hat{v} = \max_kx_k 
+\]
+exactly as we sought to show.
 
 \subsection*{(c)}
 Find the method of moments estimator for \(v\). \\ \\
-
+Let \(X_1, \dots, X_n \sim \text{Uniform}(0, v)\). We therefore have the first population moment as
+\[
+  \alpha_1 = E[X] = \int_{0}^{v} x \cdot \frac{1}{v} dx
+\]
+\[
+  = \frac{1}{v} \cdot \frac{x^2}{2} |_{0}^{v}
+\]
+\[
+  = \frac{1}{v} \cdot \frac{v^2}{2} - 0
+\]
+\[
+  E[X] = \frac{v}{2}
+\]
+We would then also have the corresponding first sample moment as 
+\[
+  \hat{\alpha_1} = \frac{1}{n} \sum_{k=1}^{n} x_k = \bar{x}
+\]
+So we finally take the method of moments estimator to be 
+\[
+  \frac{\hat{v}}{2} = \bar{x}
+\]
+\[
+  \boxed{\hat{v} = 2 \bar{x}}
+\]
 
 }
 {\Large 
