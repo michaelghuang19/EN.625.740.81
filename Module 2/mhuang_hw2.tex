@@ -172,8 +172,71 @@ So we finally take the method of moments estimator to be
 {\Large 
 
 \section*{3.}
-
-
+Let \(\mathbf{X}\) be a binary (0, 1) vector with multivariate Bernoulli distribution
+\[
+  p(\mathbf{x}|\mathbf{v}) = \prod_{i=1}^d v_i^{x_i} (1 - v_i)^{1-x_i}
+\]
+where \(\mathbf{v} = (v_1, \dots, v_d)^T\) is an unknown parameter vector, \(v_i\) being the probability that \(x_i = 1\). Show that the maximum likelihood estimate for \(\mathbf{v}\) is
+\[
+  \hat{\mathbf{v}} = \frac{1}{n} \sum_{k=1}^{n} \mathbf{x}_k
+\]
+We first evaluate the likelihood function, taking the product of all observations given \(n\) independent observations of \(\mathbf{x}\):
+\[
+  L(\mathbf{v}) = \prod_{k=1}^{n} p(\mathbf{x}_k | \mathbf{v}) = \prod_{k=1}^{n} \prod_{i=1}^d v_i^{x_{ki}} (1 - v_i)^{1-x_{ki}}
+\]
+We then take the log likelihood:
+\[
+  l(\mathbf{v}) = \log(\prod_{k=1}^{n} \prod_{i=1}^d v_i^{x_{ki}} (1 - v_i)^{1-x_{ki}})
+\]
+\[
+  = \sum_{k=1}^{n} \sum_{i=1}^{d} \log(v_i^{x_{ki}} (1 - v_i)^{1-x_{ki}})
+\]
+\[
+  l(\mathbf{v})= \sum_{k=1}^{n} \sum_{i=1}^{d} (x_{ki}\log(v_i) + (1 - x_{ki})\log(1-v_i))
+\]
+Now taking the derivative of this:
+\[
+  \frac{\partial l}{\partial v_i} = \frac{\partial}{\partial v_i}(\sum_{k=1}^{n} \sum_{i=1}^{d} (x_{ki}\log(v_i) + (1 - x_{ki})\log(1-v_i)))
+\]
+\[
+  \frac{\partial l}{\partial v_i} = \sum_{k=1}^{n} \sum_{i=1}^{d} \frac{\partial}{\partial v_i} (x_{ki}\log(v_i) + (1 - x_{ki})\log(1-v_i))
+\]
+As we are only differentiating with respect to \(v_i\), everything within the inner sum becomes 0 except for the \(v_i\) term itself, so this essentially simplifies to 
+\[
+  \frac{\partial l}{\partial v_i} = \sum_{k=1}^{n} \frac{\partial}{\partial v_i} (x_{ki}\log(v_i) + (1 - x_{ki})\log(1-v_i))
+\]
+\[
+  \frac{\partial l}{\partial v_i} = \sum_{k=1}^{n} (\frac{x_{ki}}{v_i}  - \frac{1 - x_{ki}}{1 - v_i})
+\]
+Now setting to 0 and solving:
+\[
+  0 = \sum_{k=1}^{n} \frac{x_{ki}}{v_i} - \sum_{k=1}^{n}  \frac{1 - x_{ki}}{1 - v_i}
+\]
+\[
+  \sum_{k=1}^{n} \frac{x_{ki}}{v_i} = \sum_{k=1}^{n}  \frac{1 - x_{ki}}{1 - v_i}
+\]
+\[
+  \frac{1}{v_i} \sum_{k=1}^{n} x_{ki} = \frac{1}{1 - v_i} \sum_{k=1}^{n} (1 - x_{ki})
+\]
+\[
+  \frac{1}{v_i} \sum_{k=1}^{n} x_{ki} = \frac{1}{1 - v_i}  (n - \sum_{k=1}^{n} x_{ki})
+\]
+\[
+  (1 - v_i) \sum_{k=1}^{n} x_{ki} = v_i (n - \sum_{k=1}^{n} x_{ki})
+\]
+\[
+  \sum_{k=1}^{n} x_{ki} - v_i \sum_{k=1}^{n} x_{ki} = nv_i - v_i\sum_{k=1}^{n} x_{ki}
+\]
+\[
+  \sum_{k=1}^{n} x_{ki} = nv_i
+\]
+\[
+  v_i = \frac{1}{n} \sum_{k=1}^{n} x_{ki}
+\]
+So combining this into the overall vector \(\mathbf{v}\), we have that 
+\[
+  \boxed{\hat{\mathbf{v}} = \frac{1}{n} \sum_{k=1}^{n} \mathbf{x}_k}
+\]
 
 }
 {\Large 
