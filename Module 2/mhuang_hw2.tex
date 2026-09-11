@@ -242,10 +242,100 @@ So combining this into the overall vector \(\mathbf{v}\), we have that
 {\Large 
 
 \section*{4.}
+Let \(X\) have a gamma distribution (\(\Gamma(x; \alpha, \beta)\))
+\[
+  p(x | \alpha, \beta) = 
+  \begin{cases}
+    \frac{1}{\Gamma(\alpha) \beta^\alpha} x^{\alpha - 1} e^{-x / \beta}, & x > 0 \text{ and } \alpha, \beta > 0 \\
+    0, & \text{otherwise.}
+  \end{cases}
+\]
 
 \subsection*{(a)} 
+Suppose that \(n\) samples \(x_1, \dots, x_n\) are drawn independently according to \(p(x | \alpha, \beta)\). Find the method of moments estimator for \(\alpha\) and \(\beta\). \\ \\
+Because we have two unknown parameters we want to solve for, we take the first two moments. For the first population moment:
+\[
+  \alpha_1 = E[X] = \alpha \beta
+\]
+And for the second population moment: 
+\[
+  \alpha_2 = E[X^2] = \text{Var}(X) + E[X]^2
+\]
+\[
+  = \alpha \beta^2 + (\alpha \beta)^2
+\]
+\[
+  = \alpha \beta^2 + \alpha^2 \beta^2
+\]
+\[
+  \alpha_2 = \alpha\beta^2 (1 + \alpha)
+\]
+Next, taking the sample moments: 
+\[
+  \hat{\alpha_1} = \frac{1}{n} \sum_{i=1}^{n} x_k
+\]
+\[
+  \hat{\alpha_1} = \bar{x}
+\]
+And subsequently:
+\[
+  \hat{\alpha_2} = \frac{1}{n} \sum_{i=1}^{n} x_k^2
+\]
+We can now set up our equations and solve:
+\[
+  \begin{aligned}
+    \alpha \beta = \bar{x}
+    \alpha\beta^2 (1 + \alpha) = \frac{1}{n} \sum_{i=1}^{n} x_k^2
+  \end{aligned}
+\]
+Taking \(\beta = \frac{\bar{x}}{\alpha}\) and substituting:
+\[
+  \alpha (\frac{\bar{x}}{\alpha})^2 (1 + \alpha) = \frac{1}{n} \sum_{i=1}^{n} x_k^2
+\]
+\[
+  \frac{\bar{x}^2(1 + \alpha)}{\alpha} = \frac{1}{n} \sum_{i=1}^{n} x_k^2
+\]
+\[
+  \bar{x}^2 (1 + \frac{1}{\alpha}) = \frac{1}{n} \sum_{i=1}^{n} x_k^2
+\]
+\[
+  1 + \frac{1}{\alpha} = \frac{\frac{1}{n} \sum_{i=1}^{n} x_k^2}{\bar{x}^2 }
+\]
+\[
+  \frac{1}{\alpha} = \frac{\frac{1}{n} \sum_{i=1}^{n} x_k^2 - \bar{x}^2}{\bar{x}^2}
+\]
+We note that \(\frac{1}{n} \sum_{i=1}^{n} x_k^2 - \bar{x}^2\) is exactly the sample variance \(s^2\), so therefore 
+\[
+  \frac{1}{\alpha} = \frac{s^2}{\bar{x}^2}
+\]
+\[
+  \alpha = \frac{\bar{x}^2}{s^2}
+\]
+And now solving for \(\beta\):
+\[
+  \beta = \frac{\bar{x}}{\alpha} = \frac{\bar{x}}{\frac{\bar{x}^2}{s^2}} = \frac{s^2}{\bar{x}}
+\]
+We therefore find that 
+\[
+  \boxed{\hat{\alpha} = \frac{\bar{x}^2}{s^2}, \hat{\beta} = \frac{s^2}{\bar{x}}}
+\]
 
 \subsection*{(b)}
+Show that the exponential distribution is \(\Gamma(x; 1, 1 / v)\). \\ \\
+We aim to essentially show that the exponential distribution pdf is 
+\[
+  p(x|1, \frac{1}{v}) = \frac{1}{\Gamma(1) \frac{1}{v}^1} x^{1 - 1} e^{-x / \frac{1}{v}}
+\]
+\[
+  = \frac{1}{0! \cdot \frac{1}{v}} \cdot x^0 \cdot e^{-vx}
+\]
+\[
+  = v \cdot 1 \cdot e^{-vx}
+\]
+\[
+  = ve^{-vx}
+\]
+which is exactly the standard exponential distribution with \(\lambda = v\). 
 
 }
 {\Large 
