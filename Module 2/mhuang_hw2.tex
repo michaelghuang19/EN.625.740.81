@@ -9,7 +9,7 @@
 \fancypagestyle{firstpageheader}{
   \fancyhead[R]{
     \changefont
-    \parbox[t]{4cm}{ % Adjust width as needed
+    \parbox[t]{4cm}{
       Michael Huang\\
       EN.625.740.81\\
       Homework 2
@@ -418,7 +418,7 @@ Which gives us the final distribution of
 {\Large 
 
 \section*{6.}
-Let \(X\) have a normal distribution with mean \(\mu\) and variance \(\sigma^2 (X \sim N(\mu, \sigma^2))\)
+Let \(X\) have a normal distribution with mean \(\mu\) and variance \(\sigma^2 \) \((X \sim N(\mu, \sigma^2))\)
 \[
   p(x | \mu, \sigma) = \frac{1}{\sigma \sqrt{2\pi}} e^{-(x - \mu)^2 / 2 \sigma^2}.
 \]
@@ -426,15 +426,60 @@ Let \(Y = e^X\).
 
 \subsection*{(a)} 
 Find the distribution \(p(y | \mu, \sigma)\) of \(Y\). \\ \\
-
+With \(Y = e^X\), we can use the transformation method. Taking the inverse, we get \(x = \ln(y)\). We aim to solve for the pdf accordingly:
+\[
+  p_Y(y) = p_X(x(y)) | \frac{dx}{dy} |
+\]
+\[
+  = p_X(\ln(y)) | \frac{d}{dy} (x) |
+\]
+\[
+  = p_X(\ln(y)) | \frac{d}{dy} \ln(y) |
+\]
+\[
+  = \frac{1}{\sigma \sqrt{2\pi}} e^{-(\ln(y) - \mu)^2 / 2 \sigma^2} \cdot \frac{1}{y}
+\]
+\[
+  \boxed{p(y | \mu, \sigma) = \frac{1}{y \sigma \sqrt{2\pi}} e^\frac{-(\ln(y) - \mu)^2}{2 \sigma^2}}
+\]
 
 \subsection*{(b)}
 What is the mean of \(Y\)? \\ \\
-
+We aim to find \(E[Y] = E[e^X]\), so we are essentially taking the mean of a distribution based on \(X\). Because \(X\) is a normal distribution, an easy way to find this is by evaluating the moment-generating function \(M_X(t) = E[e^{tX}]\) at \(t=1\):
+\[
+  M_X(t) = e^{\mu t + \frac{1}{2} \sigma^2 t^2}
+\]
+\[
+  E[Y] = E[e^X] = M_X(1) = e^{\mu \cdot 1 + \frac{1}{2} \sigma^2 \cdot 1^2}
+\]
+\[
+  \boxed{E[Y] = e^{\mu + \frac{1}{2} \sigma^2}}
+\]
 
 \subsection*{(c)}
 What is the variance of \(Y\)? \\ \\
-
+As \(\text{Var}(Y) = E[Y^2] - E[Y]^2\), similar to above, we can solve for \(E[Y^2]\) using the moment generating function. Let's plug in and solve:
+\[
+  \text{Var}(Y) = E[Y^2] - E[Y]^2
+\]
+\[
+  = M_X(2) - (e^{\mu + \frac{1}{2} \sigma^2})^2
+\]
+\[
+  = e^{\mu \cdot 2 + \frac{1}{2} \sigma^2 \cdot 2^2} - (e^{\mu + \frac{1}{2} \sigma^2})^2
+\]
+\[
+  = e^{2 \mu + 2 \sigma^2} - (e^{\mu + \frac{1}{2} \sigma^2})^2
+\]
+\[
+  = e^{2 \mu + 2 \sigma^2} - e^{2\mu + \sigma^2}
+\]
+\[
+  = e^{2 \mu} \cdot e^{2 \sigma^2} - e^{2\mu} \cdot e^{\sigma^2}
+\]
+\[
+  \boxed{\text{Var}(Y) = e^{2\mu + \sigma^2} ( e^{\sigma^2} - 1)}
+\]
 
 }
 
