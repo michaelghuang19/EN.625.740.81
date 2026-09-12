@@ -341,6 +341,78 @@ which is exactly the standard exponential distribution with \(\lambda = v\).
 {\Large 
 
 \section*{5.}
+Let the random variables \(X\) and \(Y\) be independent with exponential distributions
+\[
+  p(x | \alpha) = 
+  \begin{cases}
+    \alpha e^{-\alpha x}, & x \geq 0 \\
+    0, & \text{otherwise,}
+  \end{cases}
+\]
+and 
+\[
+  p(y | \beta) = 
+  \begin{cases}
+    \beta e^{-\beta y}, & y \geq 0 \\
+    0, & \text{otherwise.}
+  \end{cases}
+\]
+Find \(p_z(z | \alpha, \beta)\), the distribution of \(Z = X + Y\). \\ \\
+Since \(X\) and \(Y\) are independent, we can first determine the non-conditional pdf \(p_Z\) of the distribution directly:
+\[
+  p_Z(z) = \int_{-\infty}^{\infty} p_X(x) p_Y (z - x) dx
+\]
+\[
+  = \int_{-\infty}^{\infty} \alpha e^{-\alpha x} \cdot \beta e^{-\beta(z - x)} dx
+\]
+\[
+  = \alpha \beta e^{-\beta z} \int_{-\infty}^{\infty} e^{(\beta - \alpha) x} dx
+\]
+\[
+  p_Z(z) = \alpha \beta e^{-\beta z} \int_{0}^{z} e^{(\beta - \alpha) x} dx
+\]
+for which we could adjust the integral's limits because of how the variables are both only nonzero when nonnegative. Before we proceed to further simplify, we note that taking the exponential integral would lead to the possibility of a 0 denominator and undefined value if \(\alpha = \beta\), so we break this into two different cases to get the final pdfs: \\ \\
+If \(\alpha = \beta\): \\
+\[
+  p_Z(z) = \alpha \beta e^{-\beta z} \int_{0}^{z} e^{0} dx
+\]
+Since we are setting \(\alpha = \beta = \lambda\):
+\[
+  = \lambda^2 e^{-\lambda z} \cdot x |_{0}^{z}
+\]
+\[
+  = \lambda^2 e^{-\lambda z} \cdot (z - 0)
+\]
+\[
+  p_Z(z) = z\lambda^2e^{-\lambda z}
+\]
+If \(\alpha \neq \beta\): \\
+\[
+  p_Z(z) = \alpha \beta e^{-\beta z} \cdot \frac{1}{\beta - \alpha} e^{(\beta - \alpha) x}  |_{0}^{z}
+\]
+\[
+  = \alpha \beta e^{-\beta z} \cdot \frac{1}{\beta - \alpha} e^{(\beta - \alpha) x} |_{0}^{z}
+\]
+\[
+  = \alpha \beta e^{-\beta z} \cdot \frac{e^{(\beta - \alpha) \cdot z} - e^0}{\beta - \alpha}
+\]
+\[
+  = \alpha \beta \cdot \frac{e^{- \alpha z} - e^{- \beta z}}{\beta - \alpha}
+\]
+\[
+  p_Z(z) = \frac{\alpha \beta (e^{- \alpha z} - e^{- \beta z})}{\beta - \alpha}
+\]
+Which gives us the final distribution of 
+\[
+  \boxed{
+  p_Z(z | \alpha, \beta) = 
+  \begin{cases}
+    z\lambda^2e^{-\lambda z}, & \alpha = \beta, z \geq 0 \\
+    \frac{\alpha \beta (e^{- \alpha z} - e^{- \beta z})}{\beta - \alpha}, & \alpha \neq \beta, z \geq 0 \\
+    0, & \text{otherwise.}
+  \end{cases}
+  }
+\]
 
 }
 {\Large 
@@ -349,9 +421,12 @@ which is exactly the standard exponential distribution with \(\lambda = v\).
 
 \subsection*{(a)} 
 
+
 \subsection*{(b)}
 
+
 \subsection*{(c)}
+
 
 }
 
