@@ -32,16 +32,96 @@
 {\Large 
 
 \section*{2.}
+The Poisson distribution for a discrete \(k, k = 0, 1, 2, \dots\) and real parameter \(\lambda\) is 
+\[
+  P(k | \lambda) = e^{-\lambda} \frac{\lambda^k}{k!}.
+\]
 
 \subsection*{(a)} 
+Find the mean of \(k\). \\ \\
+By definition, we have that 
+\[
+  E[k] = \sum_{k=0}^{\infty} k \cdot P(k | \lambda) 
+\]
+\[
+  = \sum_{k=0}^{\infty} k \cdot e^{-\lambda} \frac{\lambda^k}{k!}
+\]
+\[
+  = 0 + \sum_{k=1}^{\infty} \lambda^k e^{-\lambda} \frac{k}{k!}
+\]
+\[
+  = e^{-\lambda} \sum_{k=1}^{\infty} \lambda^k \frac{1}{(k-1)!}
+\]
+Simplifying by substituting \(j = k-1\):
+\[
+  = e^{-\lambda} \sum_{j=0}^{\infty} \lambda^{j + 1} \frac{1}{j!}
+\]
+\[
+  = \lambda e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^{j}}{j!}
+\]
+\[
+  = \lambda e^{-\lambda} \cdot e^{\lambda}
+\]
+\[
+  \boxed{E[k] = \lambda }
+\]
 
 \subsection*{(b)}
+Find the variance of \(k\). \\ \\
+We need to essentially find \(E[k^2]\) here. We can quickly ascertain that directly substituting \(k^2\) will make this hard to simplify and cancel out the \(k\) terms in both the numerator and factorial denominator, so we can instead solve for \(E[k(k-1)]\):
+\[
+  E[k(k-1)] = \sum_{k=0}^{\infty} k(k-1) \cdot e^{-\lambda} \frac{\lambda^k}{k!}
+\]
+\[
+  = \sum_{k=0}^{\infty} e^{-\lambda} \frac{(k-1) \cdot \lambda^k}{(k-1)!}
+\]
+\[
+  = e^{-\lambda} \sum_{k=0}^{\infty} \frac{\lambda^k}{(k-2)!}
+\]
+\[
+  = 0 + 0 + e^{-\lambda} \sum_{k=2}^{\infty} \frac{\lambda^k}{(k-2)!}
+\]
+Simplifying by substituting \(j = k - 2\):
+\[
+  = e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^{j-2}}{j!}
+\]
+\[
+  = \lambda^2 e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^{j}}{j!}
+\]
+\[
+  E[k(k-1)] = \lambda^2 e^{-\lambda} e^{\lambda} = \lambda^2
+\]
+\[
+  E[k^2 - k] = \lambda^2 
+\]
+\[
+  E[k^2] - E[k] = \lambda^2
+\]
+\[
+  E[k^2] = \lambda^2 + E[k] = \lambda^2 + \lambda
+\]
+We can now solve for variance:
+\[
+  \text{Var}(k) = E[k^2] - E[k]^2
+\]
+\[
+  = \lambda^2 + \lambda - \lambda^2
+\]
+\[
+  \boxed{\text{Var}(k) = \lambda}
+\]
+
 
 \subsection*{(c)}
+Find the mode of \(k\). \\ \\
+
 
 \subsection*{(d)}
+Assume two categories \(C_1\) and \(C_2\), equally probably \(a priori\), distributed with Poisson distributions and \(\lambda_1 > \lambda_2\). What is the Bayes classification decision? \\ \\
+
 
 \subsection*{(e)}
+What is the Bayes error rate? \\ \\
 
 }
 {\Large 
