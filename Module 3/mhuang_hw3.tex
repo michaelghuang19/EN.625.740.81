@@ -114,14 +114,68 @@ We can now solve for variance:
 
 \subsection*{(c)}
 Find the mode of \(k\). \\ \\
-
+The mode is the value of \(k\) with the largest probability of occuring. Since \(k\) is an integer value, it must be an integer value. We can determine this by observing the nature in which the sequence continues element by element:
+\[
+  P(k | \lambda) = 
+\]
+\[
+  P(k + 1 | \lambda) = e^{-\lambda} \frac{\lambda^{k+1}}{(k+1)!}
+\]
+We see that 
+\[
+  \frac{P(k | \lambda)}{P(k + 1 | \lambda)} = \frac{e^{-\lambda} \frac{\lambda^k}{k!}}{e^{-\lambda} \frac{\lambda^{k+1}}{(k+1)!}}
+\]
+\[
+  = \frac{\lambda^k \cdot (k+1)!}{\lambda^{k+1} \cdot k!}
+\]
+\[
+  = \frac{k + 1}{\lambda}
+\]
+So essentially, with the way this is set up, we want to find when the current probability is bigger than the next probability, since we know the Poisson distribution is parabolically shaped a maximum point after which the probability begins decreasing. We have a few different cases: \\ 
+- If \(\frac{k+1}{\lambda} > 1\), then probabilities are going down. \\ 
+- If \(\frac{k+1}{\lambda} < 1\), the probabilities are going up. \\
+- If \(\frac{k+1}{\lambda} = 1\), then \(k = \lambda - 1\). \\ \\
+From looking at this, we can see that the highest probability or mode happens around \(k = \lambda - 1\). However, since it is possible for \(k = \lambda - 1\), in this case in which \(\lambda\) is an integer, we need to differentiate two cases, since both \fbox{\(\lambda-1\) and \(\lambda\)} have equal probability and are both integers. In the case in which \(\lambda\) is not an integer, then since \(k\) must be an integer, we just take \fbox{\(\lambda\) floored to the nearest integer}.
 
 \subsection*{(d)}
 Assume two categories \(C_1\) and \(C_2\), equally probably \(a priori\), distributed with Poisson distributions and \(\lambda_1 > \lambda_2\). What is the Bayes classification decision? \\ \\
-
+We have \(P(C_1) = P(C_2) = 0.5\), and \(P(x | C_1) = e^{-\lambda_1} \frac{\lambda_1^x}{x!}\) and \(P(x | C_2) = e^{-\lambda_2} \frac{\lambda_2^x}{x!}\). By definition, we decide the category based on the probability comparison, since the priors are equal, i.e. we would choose \(C_1\) if \(P(C_1) > P(C_2)\), but as they are equal, we see if \(P(x | C_1) > P(x | C_2)\): 
+\[
+  e^{-\lambda_1} \frac{\lambda_1^x}{x!} > e^{-\lambda_2} \frac{\lambda_2^x}{x!}
+\]
+\[
+  e^{-\lambda_1} \lambda_1^x > e^{-\lambda_2} \lambda_2^x
+\]
+\[
+  -\lambda_1 + x \ln(\lambda_1) > -\lambda_2 + x \ln(\lambda_2)
+\]
+\[
+  x \ln(\lambda_1) - x \ln(\lambda_2) > -\lambda_2 + \lambda_1
+\]
+\[
+  x (\ln(\lambda_1) - \ln(\lambda_2)) > \lambda_1 - \lambda_2
+\]
+\[
+  x > \frac{\lambda_1 - \lambda_2}{\ln(\lambda_1) - \ln(\lambda_2)}
+\]
+Therefore, the decision rule is as follows: \\
+\fbox{Choose \(C_1\) if \(x > \frac{\lambda_1 - \lambda_2}{\ln(\lambda_1) - \ln(\lambda_2)}\); Otherwise, choose \(C_2\).
+}
 
 \subsection*{(e)}
 What is the Bayes error rate? \\ \\
+Logically, the Bayes error rate is the probability of making an incorrect classification; that is, either we choose \(C_2\) when \(C_1\) was the right category, or we choose \(C_1\) when \(C_2\) was the right category. Using our priors with \(P(C_1) = P(C_2) = 0.5\), and letting the threshold of classification to be \(y = \frac{\lambda_1 - \lambda_2}{\ln(\lambda_1) - \ln(\lambda_2)}\), with the understanding that we classify into the categories based on being above or below this threshold, we can express \(P(\text{error})\) to be 
+\[
+  P(\text{error}) = P(C_1) \cdot \sum_{k=0}^{\lfloor y \rfloor} P(k | C_1) + P(C_2) \cdot \sum_{k = \lceil y \rceil}^{\infty} P(k | C_2)
+\]
+\[
+  P(\text{error}) = \frac{1}{2} \cdot \sum_{k=0}^{\lfloor y \rfloor} e^{-\lambda_1} \frac{\lambda_1^k}{k!} + \frac{1}{2} \cdot \sum_{k = \lceil y \rceil}^{\infty} e^{-\lambda_2} \frac{\lambda_2^k}{k!}
+\]
+\[
+  \boxed{
+    P(\text{error}) = \frac{\sum_{k=0}^{\lfloor y \rfloor} e^{-\lambda_1} \frac{\lambda_1^k}{k!} + \sum_{k = \lceil y \rceil}^{\infty} e^{-\lambda_2} \frac{\lambda_2^k}{k!}}{2}
+  }
+\]
 
 }
 {\Large 
