@@ -332,17 +332,93 @@ Let \(p(x | \omega_i) \sim N (\mu_i, \sigma^2 I)\) for a two-category \(k\)-dime
 
 \subsection*{(a)} 
 Find \(P_e\), the minimum probability of error. \\ \\
-
+To apply the Bayes Decision Rule, we decide \(\omega_1\) if the likelihood ratio is greater than our relevant threshold. Here, with \(P(\omega_1) = P(\omega_2) = \frac{1}{2}\), we basically are directly comparing the probabilities. We know that we are essentially choosing \(\omega_1\) based on the truthiness of
+\[
+  p(x | \omega_1) > p(x | \omega_2)
+\]
+Substituting in the PDF for a \(k\)-dimensional multivariate normal distribution with \(\Sigma = \sigma^2 I\), i.e. \(p(x | \omega_i) = \frac{1}{(2\pi\sigma^2)^{\frac{k}{2}}} e^{-\frac{\lVert x-\mu_i \rVert^2}{2\sigma^2}}\):
+\[
+  \frac{1}{(2\pi\sigma^2)^{\frac{k}{2}}} e^{-\frac{\lVert x-\mu_2 \rVert^2}{2\sigma^2}} > \frac{1}{(2\pi\sigma^2)^{\frac{k}{2}}} e^{-\frac{\lVert x-\mu_2 \rVert^2}{2\sigma^2}}
+\]
+\[
+  e^{-\frac{\lVert x-\mu_1 \rVert^2}{2\sigma^2}} > e^{-\frac{\lVert x-\mu_2 \rVert^2}{2\sigma^2}}
+\]
+Take the log-likelihood to make it easier to interpret:
+\[
+  -\frac{\lVert x-\mu_1 \rVert^2}{2\sigma^2} > -\frac{\lVert x-\mu_2 \rVert^2}{2\sigma^2}
+\]
+\[
+ \lVert x-\mu_1 \rVert^2 < \lVert x-\mu_2 \rVert^2
+\]
+Expanding by definition of the norm function and solving:
+\[
+  (x-\mu_1)^T (x-\mu_1) < (x-\mu_2)^T (x-\mu_2)  
+\]
+\[
+  x^Tx - 2\mu_1^Tx + \mu_1^T\mu_1 < x^Tx - 2\mu_2^Tx + \mu_2^T\mu_2 
+\]
+\[
+  2\mu_2^Tx - 2\mu_1^Tx < \mu_2^T\mu_2 - \mu_1^T\mu_1
+\]
+\[
+  2(\mu_2 - \mu_1)^Tx < \lVert \mu_2 \rVert ^2 - \lVert \mu_1 \rVert^2 
+\]
+\[
+  (\mu_2 - \mu_1)^Tx < \frac{1}{2}(\lVert \mu_2 \rVert ^2 - \lVert \mu_1 \rVert^2)
+\]
+We now have our discriminant function which is the left-hand side, with the threshold on the right-hand side. We now have distribution \(g(x) = (\mu_2 - \mu_1)^Tx\) which is a normal random variable with mean \(\mu_g = E[g(x) | \omega_1] = (\mu_2 - \mu_1)^T\mu_1\), and variance \(\sigma^2_g = \text{Var}(g(x) | \omega_1) = (\mu_2 - \mu_1)^T(\sigma^2 I)(\mu_2 - \mu_1) = \sigma^2 \lVert \mu_2 - \mu_1 \rVert^2\). Finally, we now compute the minimum probability of error:
+\[
+  P(\text{error} | \omega_1) = P(g(x) \geq \text{threshold} | \omega_1) = \Phi(\frac{\mu_g - \text{threshold}}{\sigma_g})
+\]
+Now substituting and simplifying:
+\[
+  = \Phi(\frac{(\mu_2 - \mu_1)^T\mu_1 - \frac{1}{2}(\lVert \mu_2 \rVert^2 - \lVert \mu_1 \rVert^2)}{\sigma \lVert \mu_2 - \mu_1 \rVert})
+\]
+\[
+  = \Phi(\frac{\mu_2^T\mu_1 - \mu_1^T\mu_1 - \frac{1}{2}\lVert \mu_2 \rVert^2 - \frac{1}{2}\lVert \mu_1 \rVert^2}{\sigma \lVert \mu_2 - \mu_1 \rVert})
+\]
+\[
+  = \Phi(\frac{\mu_2^T\mu_1 - \lVert \mu_1 \rVert^2 - \frac{1}{2}\lVert \mu_2 \rVert^2 - \frac{1}{2}\lVert \mu_1 \rVert^2}{\sigma \lVert \mu_2 - \mu_1 \rVert})
+\]
+\[
+  = \Phi(\frac{ -\frac{1}{2}(\lVert \mu_1 \rVert^2 + \lVert \mu_2 \rVert^2 - 2\mu_2^T\mu_1)}{\sigma \lVert \mu_2 - \mu_1 \rVert})
+\]
+\[
+  = \Phi(\frac{ -\frac{1}{2}\lVert \mu_2 - \mu_1 \rVert^2}{\sigma \lVert \mu_2 - \mu_1 \rVert})
+\]
+\[
+  \boxed{P_e = \Phi(-\frac{\lVert \mu_2 - \mu_1 \rVert}{2\sigma})}
+\]
 
 \subsection*{(b)}
 Let \(\mu_1 = 0\) and \(\mu_2 = (m_1, \dots, m_k)^T \neq 0\). Show that \(P_e \to 0\) as the dimension \(k\) approaches infinity. Assume that \(\sum_{k=1}^{\infty} m^2_k \to \infty\). \\ \\
-
+The squared difference between the means (which we determined what we needed for doing the decisionmaking) would be 
+\[
+  \lVert \mu_2 - \mu_1 \rVert^2 = \sum_{j=1}^{k} m^2_j
+\]
+and therefore 
+\[
+  \lVert \mu_2 - \mu_1 \rVert = \sqrt{\sum_{j=1}^{k} m^2_j}
+\]
+So we therefore can substitute accordingly to find that 
+\[
+  P_e = \Phi(-\frac{\sqrt{\sum_{j=1}^{k} m^2_j}}{2\sigma})
+\]
+We are given in the problem the assumption that \(\sum_{k=1}^{\infty} m^2_k \to \infty\), so substituting we see that  
+\[
+  -\frac{\sqrt{\sum_{j=1}^{k} m^2_j}}{2\sigma} \to -\frac{\sqrt{\infty}}{2\sigma} \to -\infty
+\]
+and substituting once again, we find that 
+\[
+  P_e = \Phi(-\infty) \to 0
+\]
+exactly as we sought to find.
 
 }
 {\Large 
 
 \section*{4.}
-Under the assumption that \(\lambda_{21} > \lambda_{11}\) and \(\lambda_{12} > \lambda_{22}\), show that the general minimum risk discriminant function for a classifier with independent binary features is given by \(g(x) = w^Tx + w_0\). What are \(w and w_0\)? \\ \\
+Under the assumption that \(\lambda_{21} > \lambda_{11}\) and \(\lambda_{12} > \lambda_{22}\), show that the general minimum risk discriminant function for a classifier with independent binary features is given by \(g(x) = w^Tx + w_0\). What are \(w \) and \(w_0\)? \\ \\
 
 
 }
