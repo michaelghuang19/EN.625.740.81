@@ -12,7 +12,7 @@
     \parbox[t]{4cm}{
       Michael Huang\\
       EN.625.740.81\\
-      Homework 
+      Homework 3
     }
   }
 }
@@ -419,7 +419,82 @@ exactly as we sought to find.
 
 \section*{4.}
 Under the assumption that \(\lambda_{21} > \lambda_{11}\) and \(\lambda_{12} > \lambda_{22}\), show that the general minimum risk discriminant function for a classifier with independent binary features is given by \(g(x) = w^Tx + w_0\). What are \(w \) and \(w_0\)? \\ \\
-
+We have some feature vector \(x = (x_1, x_2, \dots, x_d)^T\) and corresponding conditional risks 
+\[
+  R(\alpha_1 | x) = \lambda_{11} P(\omega_1 | x) + \lambda_{12} P(\omega_2 | x)
+\]
+\[
+  R(\alpha_1 | x) = \lambda_{21} P(\omega_1 | x) + \lambda_{22} P(\omega_2 | x)
+\]
+which we can express in terms of an actual rule as picking \(\omega_1\) if \(R(\alpha_1 | x) < R(\alpha_2 | x)\). We substitute accordingly:
+\[
+  \lambda_{11} P(\omega_1 | x) + \lambda{_12} P(\omega_2 | x) < \lambda_{21} P(\omega_1 | x) + \lambda_{22} P(\omega_2 | x) 
+\]
+\[
+  \lambda_{12} P(\omega_2 | x) - \lambda_{22} P(\omega_2 | x) < \lambda_{21} P(\omega_1 | x) - \lambda_{11} P(\omega_1 | x)
+\]
+\[
+  (\lambda_{21} - \lambda_{11})P(\omega_1 | x) > (\lambda_{12} - \lambda_{22} )P(\omega_2 | x) 
+\]
+And applying Bayes' theorem: 
+\[
+  (\lambda_{21} - \lambda_{11}) \cdot P(x | \omega_1) \cdot P(\omega_1) > (\lambda_{12} - \lambda_{22} ) \cdot P(x | \omega_2) \cdot P(\omega_2)
+\]
+Taking the log likelihood to get the discriminant function:
+\[
+  \frac{(\lambda_{21} - \lambda_{11}) \cdot P(x | \omega_1) \cdot P(\omega_1)}{(\lambda_{12} - \lambda_{22} ) \cdot P(x | \omega_2) \cdot P(\omega_2)} > 1
+\]
+\[
+  \ln(\frac{(\lambda_{21} - \lambda_{11}) \cdot P(x | \omega_1) \cdot P(\omega_1)}{(\lambda_{12} - \lambda_{22} ) \cdot P(x | \omega_2) \cdot P(\omega_2)}) > \ln(1)
+\]
+\[
+  \ln(\frac{\lambda_{21} - \lambda_{11}}{\lambda_{12} - \lambda_{22}}) + \ln(\frac{P(x | \omega_1)}{P(x | \omega_2)}) + \ln(\frac{P(\omega_1)}{P(\omega_2)}) > 0
+\]
+We are given in the problem statement that \(\lambda_{21} > \lambda_{11}\) and \(\lambda_{12} > \lambda_{22}\), so this is okay as well -- this left-hand side is now our discriminant function. Using the likelihood ratio expressed as a product by assuming conditional independence, with \(p_i = \text{Pr}[x_i = 1 | \omega_1]\) and \(q_i = \text{Pr}[x_i = 1 | \omega_2]\), which lets us express the class-conditional probabilities and likelihood ratios as follows:
+\[
+  P(x | \omega_1) = \prod_{i=1}^{d} p_i^{x_i} (1-p_i)^{1-x_i}
+\]
+\[
+  P(x | \omega_2) = \prod_{i=1}^{d} q_i^{x_i} (1-q_i)^{1-x_i}
+\]
+\[
+  \frac{P(x | \omega_1)}{P(x | \omega_2)} = \prod_{i=1}^{d} (\frac{p_i}{q_i})^{x_i} (\frac{1 - p_i}{1 - q_i})^{1 - x_i}
+\]
+and taking the log likelihood:
+\[
+  \ln(\frac{P(x | \omega_1)}{P(x | \omega_2)}) = \sum_{i=1}^{d}[x_i \ln(\frac{p_i}{q_i}) + (1 - x_i)\ln(\frac{1 - p_i}{1 - q_i})]
+\]
+\[
+  = \sum_{i=1}^{d}[x_i \ln(\frac{p_i}{q_i}) + \ln(\frac{1 - p_i}{1 - q_i}) - x_i\ln(\frac{1 - p_i}{1 - q_i})]
+\]
+\[
+  = \sum_{i=1}^{d} x_i [\ln(\frac{p_i}{q_i}) - \ln(\frac{1 - p_i}{1 - q_i})] + \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)})
+\]
+\[
+  = \sum_{i=1}^{d} x_i [\ln(\frac{\frac{p_i}{q_i}}{\frac{1 - p_i}{1 - q_i}})] + \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)})
+\]
+\[
+  = \sum_{i=1}^{d} x_i [\ln(\frac{p_i(1 - q_i)}{q_i(1 - p_i)})] + \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)})
+\]
+We can plug it back into the discriminant function accordingly:
+\[
+  g(x) = \ln(\frac{\lambda_{21} - \lambda_{11}}{\lambda_{12} - \lambda_{22}}) + \ln(\frac{P(x | \omega_1)}{P(x | \omega_2)}) + \ln(\frac{P(\omega_1)}{P(\omega_2)})
+\]
+\[
+  = \ln(\frac{\lambda_{21} - \lambda_{11}}{\lambda_{12} - \lambda_{22}}) + \sum_{i=1}^{d} x_i [\ln(\frac{p_i(1 - q_i)}{q_i(1 - p_i)})] + \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)})
+\]
+Now reformatting to match this to \(g(x) = w^Tx + w_0\):
+\[
+  g(x) = \sum_{i=1}^{d} x_i [\ln(\frac{p_i(1 - q_i)}{q_i(1 - p_i)})] + \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)}) + \ln(\frac{\lambda_{21} - \lambda_{11}}{\lambda_{12} - \lambda_{22}})
+\]
+So looking at this, we can see that we have 
+\[
+  \boxed{w = (\ln(\frac{p_1(1 - q_1)}{q_1(1 - p_1)}), \dots, \ln(\frac{p_2(1 - q_2)}{q_2(1 - p_2)}))^T}
+\]
+and 
+\[
+  \boxed{w_0 = \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)}) + \ln(\frac{\lambda_{21} - \lambda_{11}}{\lambda_{12} - \lambda_{22}})}
+\]
 
 }
 
