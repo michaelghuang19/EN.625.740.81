@@ -1,0 +1,501 @@
+\documentclass{article}
+\linespread{1.3}
+\usepackage[margin=50pt]{geometry}
+\usepackage{amsmath, amsthm, amssymb, amsthm, tikz, fancyhdr, float, graphicx, spverbatim, systeme}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\newcommand{\changefont}{\fontsize{15}{15}\selectfont}
+
+\fancypagestyle{firstpageheader}{
+  \fancyhead[R]{
+    \changefont
+    \parbox[t]{4cm}{
+      Michael Huang\\
+      EN.625.740.81\\
+      Homework 3
+    }
+  }
+}
+
+\begin{document}
+
+\thispagestyle{firstpageheader}
+{\Large 
+
+\section*{1.}
+Let the conditional densities for a two-category one-dimensional problem be given by the Cauchy distribution
+\[
+  p(x | \omega_i) = \frac{1}{\pi b} \cdot \frac{1}{1 + (\frac{x-a_i}{b})^2}
+\]
+with \(i = 1, 2\).
+
+\subsection*{(a)} 
+If \(P(\omega_1) = P(\omega_2)\), show that \(P(\omega_1|x) = P(\omega_2|x)\) if \(x = (1 / 2) (a_1 + a_2)\). Sketch \(P(\omega_1 | x)\) for the case \(a_1 = 3, a_2 = 2, b = 5.\) How does \(P(\omega_1 | x)\) behave as \(x \to -\infty\)? as \(x \to \infty\)? \\ \\
+We essentially aim to show that if the prior probabilities are equal, then the posterior probabilities are also equal at the midpoint in between the two means \(a_1\) and \(a_2\). We apply Bayes' theorem to express the posterior probabilities:
+\[
+  P(\omega_1 | x ) = \frac{p(x | \omega_1) P(\omega_1)}{p(x)}
+\]
+\[
+  = \frac{p(x | \omega_1) P(\omega_1)}{p(x | \omega_1) P(\omega_1) + p(x | \omega_2) P(\omega_2)}
+\]
+\[
+  = \frac{p(x | \omega_1) \cdot \frac{1}{2}}{p(x | \omega_1) \cdot \frac{1}{2} + p(x | \omega_2) \cdot \frac{1}{2}}
+\]
+\[
+  = \frac{p(x | \omega_1)}{p(x | \omega_1) + p(x | \omega_2)}
+\]
+\[
+  = \frac{\frac{1}{\pi b} \cdot \frac{1}{1 + (\frac{x-a_1}{b})^2}}{\frac{1}{\pi b} \cdot \frac{1}{1 + (\frac{x-a_1}{b})^2} + \frac{1}{\pi b} \cdot \frac{1}{1 + (\frac{x-a_2}{b})^2}}
+\]
+\[
+  = \frac{\frac{1}{1 + (\frac{x-a_1}{b})^2}}{\frac{1}{1 + (\frac{x-a_1}{b})^2} + \frac{1}{1 + (\frac{x-a_2}{b})^2}} 
+\]
+\[
+  = \frac{\frac{1}{\frac{b^2 + (x-a_1)^2}{b^2}}}{\frac{1}{\frac{b^2 + (x-a_1)^2}{b^2}} + \frac{1}{\frac{b^2 + (x-a_2)^2}{b^2}}}
+\]
+\[
+  = \frac{\frac{b^2}{b^2 + (x-a_1)^2}}{\frac{b^2}{b^2 + (x-a_1)^2} + \frac{b^2}{b^2 + (x-a_2)^2}}
+\]
+\[
+  = \frac{\frac{1}{b^2 + (x-a_1)^2}}{\frac{1}{b^2 + (x-a_1)^2} + \frac{1}{b^2 + (x-a_2)^2}}
+\]
+\[
+  = \frac{\frac{1}{b^2 + (x-a_1)^2} \cdot (b^2 + (x-a_1)^2) \cdot (b^2 + (x-a_2)^2)}{(\frac{1}{b^2 + (x-a_1)^2} + \frac{1}{b^2 + (x-a_2)^2}) \cdot (b^2 + (x-a_1)^2) \cdot (b^2 + (x-a_2)^2)}
+\]
+\[
+  = \frac{b^2 + (x-a_2)^2}{b^2 + (x-a_1)^2 + b^2 + (x-a_2)^2}
+\]
+\[
+  P(\omega_1 | x ) = \frac{b^2 + (x-a_2)^2}{2b^2 + (x-a_1)^2 + (x-a_2)^2}
+\]
+We graph \(P(\omega_1 | x)\) with \(a_1 = 3, a_2 = 2, b = 5\), or \[
+  P(\omega_1 | x ) = \frac{b^2 + (x-a_2)^2}{2b^2 + (x-a_1)^2 + (x-a_2)^2}
+\]
+\[
+  = \frac{5^2 + (x-2)^2}{2(5^2) + (x-3)^2 + (x-2)^2}
+\]
+\[
+  = \frac{25 + x^2 + 4 - 4x}{50 + x^2 + 9 - 6x + x^2 + 4 - 4x}
+\]
+\[
+  = \frac{x^2 - 4x + 29}{2x^2 - 10x + 63}
+\]
+From looking at the leading terms of both the numerator and denominator, we can see that for both \(x \to -\infty\) and \(x \to \infty\), we simply have \(\boxed{P(\omega_1 | x ) \to \frac{1}{2}}\). Looking at the graph itself, which we can not-so-neatly graph: 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=400pt]{1a_graph.png}
+\end{figure} \\ \\ \\ \\ \\ \\ \\ \\ \\ \\
+which confirms this. Now on to actually show what we wanted to show: \\
+Setting \(p(x | \omega_1) = p(x | \omega_2)\):
+\[
+  \frac{1}{\pi b} \cdot \frac{1}{1 + (\frac{x-a_1}{b})^2} = \frac{1}{\pi b} \cdot \frac{1}{1 + (\frac{x-a_2}{b})^2}
+\]
+\[
+  \frac{1}{1 + (\frac{x-a_1}{b})^2} = \frac{1}{1 + (\frac{x-a_2}{b})^2}
+\]
+\[
+  (\frac{x-a_1}{b})^2 = (\frac{x-a_2}{b})^2
+\]
+\[
+  (x-a_1)^2 = (x-a_2)^2
+\]
+\[
+  x^2 + a_1^2 - 2a_1x = x^2 + a_2^2 - 2a_2x
+\]
+\[
+  a_1^2 - 2a_1x = a_2^2 - 2a_2x
+\]
+\[
+  x(2a_2 - 2a_1) = a_2^2 - a_1^2
+\]
+\[
+  x = \frac{(a_2 - a_1)(a_2 + a_1)}{2(a_2 - a_1)}
+\]
+\[
+  x = \frac{a_1 + a_2}{2}
+\]
+which is exactly what we sought to show. 
+
+\subsection*{(b)}
+Using the conditional densities in part a, and assuming equal \(a\) \(priori\) probabilities, show that the minimum probability of error is given by 
+\[
+  P(\text{error}) = \frac{1}{2} - \frac{1}{\pi} \tan^{-1} |\frac{a_2 - a_1}{2b}|.
+\]
+Sketch this as a function of \(|(a_2 - a_1) / b|\). \\ \\
+We set up the error integral to determine show this minimum probability of error, choosing the decision boundary to be \(\frac{a_1 + a_2}{2}\) as we previously found to be where the probabilities are equal:
+\[
+  P(\text{error}) = P(\omega_1)P(x > \frac{a_1 + a_2}{2} | \omega_1) + P(\omega_2)P(x < \frac{a_1 + a_2}{2} | \omega_2)
+\]
+\[
+  = \frac{1}{2} \int_{\frac{a_1 + a_2}{2}}^{\infty} p(x | \omega_1) dx + \frac{1}{2} \int_{-\infty}^{\frac{a_1 + a_2}{2}} p(x | \omega_2) dx
+\]
+The integral of the Cauchy function looks annoying, let's do it on the side:
+\[
+  p(x | \omega_i) = \frac{1}{\pi b} \cdot \frac{1}{1 + (\frac{x-a_i}{b})^2}
+\]
+\[
+  \int p(x | \omega_i) = F(x) = \int_{-\infty}^{x} \frac{1}{\pi b} \cdot \frac{1}{1 + (\frac{x-a_i}{b})^2} dx
+\]
+\[
+  = \frac{1}{\pi} \int_{-\infty}^{x} \frac{1}{b} \cdot \frac{1}{1 + (\frac{x-a_i}{b})^2} dx
+\]
+Use substitution, with \(x = u, v = \frac{u - a_i}{b}\), and conveniently \(dv = \frac{1}{b}du\):
+\[
+  = \frac{1}{\pi} \int_{-\infty}^{\frac{x - a_i}{b}} \frac{1}{1 + v^2} dv
+\]
+\[
+  = \frac{1}{\pi} \int_{-\infty}^{\frac{x - a_i}{b}} \frac{1}{1 + v^2} dv
+\]
+\[
+  = \frac{1}{\pi} \cdot \tan^{-1}(v) |_{-\infty}^{\frac{x - a_i}{b}}
+\]
+\[
+  = \frac{1}{\pi} \cdot (\tan^{-1}(\frac{x - a_i}{b})- (-\frac{\pi}{2}))
+\]
+\[
+  F(x) = \frac{1}{\pi} \tan^{-1}(\frac{x - a_i}{b}) + \frac{1}{2}
+\]
+We now calculate the tail probabilities. We evaluate our CDF at the distance from the decision boundary to each class center: specifically, \(\frac{a_1 + a_2}{2} - a_1 = \frac{a_2 - a_1}{2}\) for class \(\omega_1\) and \(\frac{a_1 + a_2}{2} - a_2 = \frac{a_1 - a_2}{2}\) for class \(\omega_2\). Using these distances, we find the respective tail probabilities: \\
+- \(P(x > \frac{a_1 + a_2}{2} | \omega_1) = 1 - F_{a_1}(\frac{a_1 + a_2}{2}) = 1 - (\frac{1}{\pi} \tan^{-1}(\frac{\frac{a_1 + a_2}{2} - a_1}{b}) + \frac{1}{2})\) \\ 
+\(= 1 - (\frac{1}{\pi} \tan^{-1}(\frac{a_2 - a_1}{2b}) + \frac{1}{2}) = \frac{1}{2} - \frac{1}{\pi} \tan^{-1}(\frac{a_2 - a_1}{2b})\) \\
+- \(P(x < \frac{a_1 + a_2}{2} | \omega_2) = F_{a_2}(\frac{a_1 - a_2}{2}) = \frac{1}{\pi} \tan^{-1}(\frac{\frac{a_1 + a_2}{2} - a_2}{b}) + \frac{1}{2} = \frac{1}{2} - \frac{1}{\pi} \tan^{-1}\frac{a_2 - a_1}{2b}\) \\
+Finally, plugging all of this back into our original error equation:
+\[
+  P(\text{error}) = \frac{1}{2} \int_{\frac{a_1 + a_2}{2}}^{\infty} p(x | \omega_1) dx + \frac{1}{2} \int_{-\infty}^{\frac{a_1 + a_2}{2}} p(x | \omega_2) dx
+\]
+\[
+  = \frac{1}{2} \cdot (\frac{1}{2} - \frac{1}{\pi} \tan^{-1}(\frac{a_2 - a_1}{2b})) + \frac{1}{2} \cdot (\frac{1}{2} - \frac{1}{\pi} \tan^{-1}(\frac{a_2 - a_1}{2b}))
+\]
+\[
+  P(\text{error}) = \frac{1}{2} - \frac{1}{\pi} \tan^{-1}(\frac{|a_2 - a_1|}{2b})
+\]
+excatly as we sought to find. Sketching this as a function of \(|(a_2 - a_1) / b|\):
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=400pt]{1b_graph.png}
+\end{figure}
+
+}
+{\Large 
+
+\section*{2.}
+The Poisson distribution for a discrete \(k, k = 0, 1, 2, \dots\) and real parameter \(\lambda\) is 
+\[
+  P(k | \lambda) = e^{-\lambda} \frac{\lambda^k}{k!}.
+\]
+
+\subsection*{(a)} 
+Find the mean of \(k\). \\ \\
+By definition, we have that 
+\[
+  E[k] = \sum_{k=0}^{\infty} k \cdot P(k | \lambda) 
+\]
+\[
+  = \sum_{k=0}^{\infty} k \cdot e^{-\lambda} \frac{\lambda^k}{k!}
+\]
+\[
+  = 0 + \sum_{k=1}^{\infty} \lambda^k e^{-\lambda} \frac{k}{k!}
+\]
+\[
+  = e^{-\lambda} \sum_{k=1}^{\infty} \lambda^k \frac{1}{(k-1)!}
+\]
+Simplifying by substituting \(j = k-1\):
+\[
+  = e^{-\lambda} \sum_{j=0}^{\infty} \lambda^{j + 1} \frac{1}{j!}
+\]
+\[
+  = \lambda e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^{j}}{j!}
+\]
+\[
+  = \lambda e^{-\lambda} \cdot e^{\lambda}
+\]
+\[
+  \boxed{E[k] = \lambda }
+\]
+
+\subsection*{(b)}
+Find the variance of \(k\). \\ \\
+We need to essentially find \(E[k^2]\) here. We can quickly ascertain that directly substituting \(k^2\) will make this hard to simplify and cancel out the \(k\) terms in both the numerator and factorial denominator, so we can instead solve for \(E[k(k-1)]\):
+\[
+  E[k(k-1)] = \sum_{k=0}^{\infty} k(k-1) \cdot e^{-\lambda} \frac{\lambda^k}{k!}
+\]
+\[
+  = \sum_{k=0}^{\infty} e^{-\lambda} \frac{(k-1) \cdot \lambda^k}{(k-1)!}
+\]
+\[
+  = e^{-\lambda} \sum_{k=0}^{\infty} \frac{\lambda^k}{(k-2)!}
+\]
+\[
+  = 0 + 0 + e^{-\lambda} \sum_{k=2}^{\infty} \frac{\lambda^k}{(k-2)!}
+\]
+Simplifying by substituting \(j = k - 2\):
+\[
+  = e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^{j-2}}{j!}
+\]
+\[
+  = \lambda^2 e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^{j}}{j!}
+\]
+\[
+  E[k(k-1)] = \lambda^2 e^{-\lambda} e^{\lambda} = \lambda^2
+\]
+\[
+  E[k^2 - k] = \lambda^2 
+\]
+\[
+  E[k^2] - E[k] = \lambda^2
+\]
+\[
+  E[k^2] = \lambda^2 + E[k] = \lambda^2 + \lambda
+\]
+We can now solve for variance:
+\[
+  \text{Var}(k) = E[k^2] - E[k]^2
+\]
+\[
+  = \lambda^2 + \lambda - \lambda^2
+\]
+\[
+  \boxed{\text{Var}(k) = \lambda}
+\]
+
+
+\subsection*{(c)}
+Find the mode of \(k\). \\ \\
+The mode is the value of \(k\) with the largest probability of occuring. Since \(k\) is an integer value, it must be an integer value. We can determine this by observing the nature in which the sequence continues element by element:
+\[
+  P(k | \lambda) = 
+\]
+\[
+  P(k + 1 | \lambda) = e^{-\lambda} \frac{\lambda^{k+1}}{(k+1)!}
+\]
+We see that 
+\[
+  \frac{P(k | \lambda)}{P(k + 1 | \lambda)} = \frac{e^{-\lambda} \frac{\lambda^k}{k!}}{e^{-\lambda} \frac{\lambda^{k+1}}{(k+1)!}}
+\]
+\[
+  = \frac{\lambda^k \cdot (k+1)!}{\lambda^{k+1} \cdot k!}
+\]
+\[
+  = \frac{k + 1}{\lambda}
+\]
+So essentially, with the way this is set up, we want to find when the current probability is bigger than the next probability, since we know the Poisson distribution is parabolically shaped a maximum point after which the probability begins decreasing. We have a few different cases: \\ 
+- If \(\frac{k+1}{\lambda} > 1\), then probabilities are going down. \\ 
+- If \(\frac{k+1}{\lambda} < 1\), the probabilities are going up. \\
+- If \(\frac{k+1}{\lambda} = 1\), then \(k = \lambda - 1\). \\ \\
+From looking at this, we can see that the highest probability or mode happens around \(k = \lambda - 1\). However, since it is possible for \(k = \lambda - 1\), in this case in which \(\lambda\) is an integer, we need to differentiate two cases, since both \fbox{\(\lambda-1\) and \(\lambda\)} have equal probability and are both integers. In the case in which \(\lambda\) is not an integer, then since \(k\) must be an integer, we just take \fbox{\(\lambda\) floored to the nearest integer}.
+
+\subsection*{(d)}
+Assume two categories \(C_1\) and \(C_2\), equally probably \(a priori\), distributed with Poisson distributions and \(\lambda_1 > \lambda_2\). What is the Bayes classification decision? \\ \\
+We have \(P(C_1) = P(C_2) = 0.5\), and \(P(x | C_1) = e^{-\lambda_1} \frac{\lambda_1^x}{x!}\) and \(P(x | C_2) = e^{-\lambda_2} \frac{\lambda_2^x}{x!}\). By definition, we decide the category based on the probability comparison, since the priors are equal, i.e. we would choose \(C_1\) if \(P(C_1) > P(C_2)\), but as they are equal, we see if \(P(x | C_1) > P(x | C_2)\): 
+\[
+  e^{-\lambda_1} \frac{\lambda_1^x}{x!} > e^{-\lambda_2} \frac{\lambda_2^x}{x!}
+\]
+\[
+  e^{-\lambda_1} \lambda_1^x > e^{-\lambda_2} \lambda_2^x
+\]
+\[
+  -\lambda_1 + x \ln(\lambda_1) > -\lambda_2 + x \ln(\lambda_2)
+\]
+\[
+  x \ln(\lambda_1) - x \ln(\lambda_2) > -\lambda_2 + \lambda_1
+\]
+\[
+  x (\ln(\lambda_1) - \ln(\lambda_2)) > \lambda_1 - \lambda_2
+\]
+\[
+  x > \frac{\lambda_1 - \lambda_2}{\ln(\lambda_1) - \ln(\lambda_2)}
+\]
+Therefore, the decision rule is as follows: \\
+\fbox{Choose \(C_1\) if \(x > \frac{\lambda_1 - \lambda_2}{\ln(\lambda_1) - \ln(\lambda_2)}\); Otherwise, choose \(C_2\).
+}
+
+\subsection*{(e)}
+What is the Bayes error rate? \\ \\
+Logically, the Bayes error rate is the probability of making an incorrect classification; that is, either we choose \(C_2\) when \(C_1\) was the right category, or we choose \(C_1\) when \(C_2\) was the right category. Using our priors with \(P(C_1) = P(C_2) = 0.5\), and letting the threshold of classification to be \(y = \frac{\lambda_1 - \lambda_2}{\ln(\lambda_1) - \ln(\lambda_2)}\), with the understanding that we classify into the categories based on being above or below this threshold, we can express \(P(\text{error})\) to be 
+\[
+  P(\text{error}) = P(C_1) \cdot \sum_{k=0}^{\lfloor y \rfloor} P(k | C_1) + P(C_2) \cdot \sum_{k = \lceil y \rceil}^{\infty} P(k | C_2)
+\]
+\[
+  P(\text{error}) = \frac{1}{2} \cdot \sum_{k=0}^{\lfloor y \rfloor} e^{-\lambda_1} \frac{\lambda_1^k}{k!} + \frac{1}{2} \cdot \sum_{k = \lceil y \rceil}^{\infty} e^{-\lambda_2} \frac{\lambda_2^k}{k!}
+\]
+\[
+  \boxed{
+    P(\text{error}) = \frac{\sum_{k=0}^{\lfloor y \rfloor} e^{-\lambda_1} \frac{\lambda_1^k}{k!} + \sum_{k = \lceil y \rceil}^{\infty} e^{-\lambda_2} \frac{\lambda_2^k}{k!}}{2}
+  }
+\]
+
+}
+{\Large 
+
+\section*{3.}
+Let \(p(x | \omega_i) \sim N (\mu_i, \sigma^2 I)\) for a two-category \(k\)-dimensional problem with \(P(\omega_1) = P(\omega_2) = \frac{1}{2}\). 
+
+\subsection*{(a)} 
+Find \(P_e\), the minimum probability of error. \\ \\
+To apply the Bayes Decision Rule, we decide \(\omega_1\) if the likelihood ratio is greater than our relevant threshold. Here, with \(P(\omega_1) = P(\omega_2) = \frac{1}{2}\), we basically are directly comparing the probabilities. We know that we are essentially choosing \(\omega_1\) based on the truthiness of
+\[
+  p(x | \omega_1) > p(x | \omega_2)
+\]
+Substituting in the PDF for a \(k\)-dimensional multivariate normal distribution with \(\Sigma = \sigma^2 I\), i.e. \(p(x | \omega_i) = \frac{1}{(2\pi\sigma^2)^{\frac{k}{2}}} e^{-\frac{\lVert x-\mu_i \rVert^2}{2\sigma^2}}\):
+\[
+  \frac{1}{(2\pi\sigma^2)^{\frac{k}{2}}} e^{-\frac{\lVert x-\mu_2 \rVert^2}{2\sigma^2}} > \frac{1}{(2\pi\sigma^2)^{\frac{k}{2}}} e^{-\frac{\lVert x-\mu_2 \rVert^2}{2\sigma^2}}
+\]
+\[
+  e^{-\frac{\lVert x-\mu_1 \rVert^2}{2\sigma^2}} > e^{-\frac{\lVert x-\mu_2 \rVert^2}{2\sigma^2}}
+\]
+Take the log-likelihood to make it easier to interpret:
+\[
+  -\frac{\lVert x-\mu_1 \rVert^2}{2\sigma^2} > -\frac{\lVert x-\mu_2 \rVert^2}{2\sigma^2}
+\]
+\[
+ \lVert x-\mu_1 \rVert^2 < \lVert x-\mu_2 \rVert^2
+\]
+Expanding by definition of the norm function and solving:
+\[
+  (x-\mu_1)^T (x-\mu_1) < (x-\mu_2)^T (x-\mu_2)  
+\]
+\[
+  x^Tx - 2\mu_1^Tx + \mu_1^T\mu_1 < x^Tx - 2\mu_2^Tx + \mu_2^T\mu_2 
+\]
+\[
+  2\mu_2^Tx - 2\mu_1^Tx < \mu_2^T\mu_2 - \mu_1^T\mu_1
+\]
+\[
+  2(\mu_2 - \mu_1)^Tx < \lVert \mu_2 \rVert ^2 - \lVert \mu_1 \rVert^2 
+\]
+\[
+  (\mu_2 - \mu_1)^Tx < \frac{1}{2}(\lVert \mu_2 \rVert ^2 - \lVert \mu_1 \rVert^2)
+\]
+We now have our discriminant function which is the left-hand side, with the threshold on the right-hand side. We now have distribution \(g(x) = (\mu_2 - \mu_1)^Tx\) which is a normal random variable with mean \(\mu_g = E[g(x) | \omega_1] = (\mu_2 - \mu_1)^T\mu_1\), and variance \(\sigma^2_g = \text{Var}(g(x) | \omega_1) = (\mu_2 - \mu_1)^T(\sigma^2 I)(\mu_2 - \mu_1) = \sigma^2 \lVert \mu_2 - \mu_1 \rVert^2\). Finally, we now compute the minimum probability of error:
+\[
+  P(\text{error} | \omega_1) = P(g(x) \geq \text{threshold} | \omega_1) = \Phi(\frac{\mu_g - \text{threshold}}{\sigma_g})
+\]
+Now substituting and simplifying:
+\[
+  = \Phi(\frac{(\mu_2 - \mu_1)^T\mu_1 - \frac{1}{2}(\lVert \mu_2 \rVert^2 - \lVert \mu_1 \rVert^2)}{\sigma \lVert \mu_2 - \mu_1 \rVert})
+\]
+\[
+  = \Phi(\frac{\mu_2^T\mu_1 - \mu_1^T\mu_1 - \frac{1}{2}\lVert \mu_2 \rVert^2 - \frac{1}{2}\lVert \mu_1 \rVert^2}{\sigma \lVert \mu_2 - \mu_1 \rVert})
+\]
+\[
+  = \Phi(\frac{\mu_2^T\mu_1 - \lVert \mu_1 \rVert^2 - \frac{1}{2}\lVert \mu_2 \rVert^2 - \frac{1}{2}\lVert \mu_1 \rVert^2}{\sigma \lVert \mu_2 - \mu_1 \rVert})
+\]
+\[
+  = \Phi(\frac{ -\frac{1}{2}(\lVert \mu_1 \rVert^2 + \lVert \mu_2 \rVert^2 - 2\mu_2^T\mu_1)}{\sigma \lVert \mu_2 - \mu_1 \rVert})
+\]
+\[
+  = \Phi(\frac{ -\frac{1}{2}\lVert \mu_2 - \mu_1 \rVert^2}{\sigma \lVert \mu_2 - \mu_1 \rVert})
+\]
+\[
+  \boxed{P_e = \Phi(-\frac{\lVert \mu_2 - \mu_1 \rVert}{2\sigma})}
+\]
+
+\subsection*{(b)}
+Let \(\mu_1 = 0\) and \(\mu_2 = (m_1, \dots, m_k)^T \neq 0\). Show that \(P_e \to 0\) as the dimension \(k\) approaches infinity. Assume that \(\sum_{k=1}^{\infty} m^2_k \to \infty\). \\ \\
+The squared difference between the means (which we determined what we needed for doing the decisionmaking) would be 
+\[
+  \lVert \mu_2 - \mu_1 \rVert^2 = \sum_{j=1}^{k} m^2_j
+\]
+and therefore 
+\[
+  \lVert \mu_2 - \mu_1 \rVert = \sqrt{\sum_{j=1}^{k} m^2_j}
+\]
+So we therefore can substitute accordingly to find that 
+\[
+  P_e = \Phi(-\frac{\sqrt{\sum_{j=1}^{k} m^2_j}}{2\sigma})
+\]
+We are given in the problem the assumption that \(\sum_{k=1}^{\infty} m^2_k \to \infty\), so substituting we see that  
+\[
+  -\frac{\sqrt{\sum_{j=1}^{k} m^2_j}}{2\sigma} \to -\frac{\sqrt{\infty}}{2\sigma} \to -\infty
+\]
+and substituting once again, we find that 
+\[
+  P_e = \Phi(-\infty) \to 0
+\]
+exactly as we sought to find.
+
+}
+{\Large 
+
+\section*{4.}
+Under the assumption that \(\lambda_{21} > \lambda_{11}\) and \(\lambda_{12} > \lambda_{22}\), show that the general minimum risk discriminant function for a classifier with independent binary features is given by \(g(x) = w^Tx + w_0\). What are \(w \) and \(w_0\)? \\ \\
+We have some feature vector \(x = (x_1, x_2, \dots, x_d)^T\) and corresponding conditional risks 
+\[
+  R(\alpha_1 | x) = \lambda_{11} P(\omega_1 | x) + \lambda_{12} P(\omega_2 | x)
+\]
+\[
+  R(\alpha_1 | x) = \lambda_{21} P(\omega_1 | x) + \lambda_{22} P(\omega_2 | x)
+\]
+which we can express in terms of an actual rule as picking \(\omega_1\) if \(R(\alpha_1 | x) < R(\alpha_2 | x)\). We substitute accordingly:
+\[
+  \lambda_{11} P(\omega_1 | x) + \lambda{_12} P(\omega_2 | x) < \lambda_{21} P(\omega_1 | x) + \lambda_{22} P(\omega_2 | x) 
+\]
+\[
+  \lambda_{12} P(\omega_2 | x) - \lambda_{22} P(\omega_2 | x) < \lambda_{21} P(\omega_1 | x) - \lambda_{11} P(\omega_1 | x)
+\]
+\[
+  (\lambda_{21} - \lambda_{11})P(\omega_1 | x) > (\lambda_{12} - \lambda_{22} )P(\omega_2 | x) 
+\]
+And applying Bayes' theorem: 
+\[
+  (\lambda_{21} - \lambda_{11}) \cdot P(x | \omega_1) \cdot P(\omega_1) > (\lambda_{12} - \lambda_{22} ) \cdot P(x | \omega_2) \cdot P(\omega_2)
+\]
+Taking the log likelihood to get the discriminant function:
+\[
+  \frac{(\lambda_{21} - \lambda_{11}) \cdot P(x | \omega_1) \cdot P(\omega_1)}{(\lambda_{12} - \lambda_{22} ) \cdot P(x | \omega_2) \cdot P(\omega_2)} > 1
+\]
+\[
+  \ln(\frac{(\lambda_{21} - \lambda_{11}) \cdot P(x | \omega_1) \cdot P(\omega_1)}{(\lambda_{12} - \lambda_{22} ) \cdot P(x | \omega_2) \cdot P(\omega_2)}) > \ln(1)
+\]
+\[
+  \ln(\frac{\lambda_{21} - \lambda_{11}}{\lambda_{12} - \lambda_{22}}) + \ln(\frac{P(x | \omega_1)}{P(x | \omega_2)}) + \ln(\frac{P(\omega_1)}{P(\omega_2)}) > 0
+\]
+We are given in the problem statement that \(\lambda_{21} > \lambda_{11}\) and \(\lambda_{12} > \lambda_{22}\), so this is okay as well -- this left-hand side is now our discriminant function. Using the likelihood ratio expressed as a product by assuming conditional independence, with \(p_i = \text{Pr}[x_i = 1 | \omega_1]\) and \(q_i = \text{Pr}[x_i = 1 | \omega_2]\), which lets us express the class-conditional probabilities and likelihood ratios as follows:
+\[
+  P(x | \omega_1) = \prod_{i=1}^{d} p_i^{x_i} (1-p_i)^{1-x_i}
+\]
+\[
+  P(x | \omega_2) = \prod_{i=1}^{d} q_i^{x_i} (1-q_i)^{1-x_i}
+\]
+\[
+  \frac{P(x | \omega_1)}{P(x | \omega_2)} = \prod_{i=1}^{d} (\frac{p_i}{q_i})^{x_i} (\frac{1 - p_i}{1 - q_i})^{1 - x_i}
+\]
+and taking the log likelihood:
+\[
+  \ln(\frac{P(x | \omega_1)}{P(x | \omega_2)}) = \sum_{i=1}^{d}[x_i \ln(\frac{p_i}{q_i}) + (1 - x_i)\ln(\frac{1 - p_i}{1 - q_i})]
+\]
+\[
+  = \sum_{i=1}^{d}[x_i \ln(\frac{p_i}{q_i}) + \ln(\frac{1 - p_i}{1 - q_i}) - x_i\ln(\frac{1 - p_i}{1 - q_i})]
+\]
+\[
+  = \sum_{i=1}^{d} x_i [\ln(\frac{p_i}{q_i}) - \ln(\frac{1 - p_i}{1 - q_i})] + \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)})
+\]
+\[
+  = \sum_{i=1}^{d} x_i [\ln(\frac{\frac{p_i}{q_i}}{\frac{1 - p_i}{1 - q_i}})] + \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)})
+\]
+\[
+  = \sum_{i=1}^{d} x_i [\ln(\frac{p_i(1 - q_i)}{q_i(1 - p_i)})] + \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)})
+\]
+We can plug it back into the discriminant function accordingly:
+\[
+  g(x) = \ln(\frac{\lambda_{21} - \lambda_{11}}{\lambda_{12} - \lambda_{22}}) + \ln(\frac{P(x | \omega_1)}{P(x | \omega_2)}) + \ln(\frac{P(\omega_1)}{P(\omega_2)})
+\]
+\[
+  = \ln(\frac{\lambda_{21} - \lambda_{11}}{\lambda_{12} - \lambda_{22}}) + \sum_{i=1}^{d} x_i [\ln(\frac{p_i(1 - q_i)}{q_i(1 - p_i)})] + \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)})
+\]
+Now reformatting to match this to \(g(x) = w^Tx + w_0\):
+\[
+  g(x) = \sum_{i=1}^{d} x_i [\ln(\frac{p_i(1 - q_i)}{q_i(1 - p_i)})] + \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)}) + \ln(\frac{\lambda_{21} - \lambda_{11}}{\lambda_{12} - \lambda_{22}})
+\]
+So looking at this, we can see that we have 
+\[
+  \boxed{w = (\ln(\frac{p_1(1 - q_1)}{q_1(1 - p_1)}), \dots, \ln(\frac{p_2(1 - q_2)}{q_2(1 - p_2)}))^T}
+\]
+and 
+\[
+  \boxed{w_0 = \sum_{i=1}^{d} \ln(\frac{1 - p_i}{1 - q_i}) + \ln(\frac{P(\omega_1)}{P(\omega_2)}) + \ln(\frac{\lambda_{21} - \lambda_{11}}{\lambda_{12} - \lambda_{22}})}
+\]
+
+}
+
+\end{document}
