@@ -1,0 +1,90 @@
+\documentclass{article}
+\linespread{1.3}
+\usepackage[margin=50pt]{geometry}
+\usepackage{amsmath, amsthm, amssymb, amsthm, tikz, fancyhdr, float, graphicx, spverbatim, systeme}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\newcommand{\changefont}{\fontsize{15}{15}\selectfont}
+
+\fancypagestyle{firstpageheader}{
+  \fancyhead[R]{
+    \changefont
+    \parbox[t]{4cm}{
+      Michael Huang\\
+      EN.625.740.81\\
+      Homework 4
+    }
+  }
+}
+
+\begin{document}
+
+\thispagestyle{firstpageheader}
+{\Large 
+
+\section*{1.}
+Fisher's linear discriminant is 
+\[
+  \hat{\mathbf{w}}^* = \text{arg} \max_{\hat{\mathbf{w}}} J(\hat{\mathbf{w}}) = \text{arg} \max_{\hat{\mathbf{w}}} \frac{\hat{\mathbf{w}}^T \mathbf{S}_b \hat{\mathbf{w}}}{\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}}}
+\]
+where \(\mathbf{S}_b = (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2})^T\) and \(\mathbf{S}_w = \sum_j \sum_\alpha (\mathbf{x}_\alpha - \mathbf{m}_j) (\mathbf{x}_\alpha - \mathbf{m}_j)^T\)
+
+\subsection*{(a)} 
+By writing \(\frac{d J(\hat{\mathbf{w}})}{d \hat{\mathbf{w}}} = 0\), show that 
+\[
+  \mathbf{S}_w^{-1} \mathbf{S}_b \hat{\mathbf{w}} = J(\hat{\mathbf{w}}) \hat{\mathbf{w}}.
+\]
+
+\subsection*{(b)}
+Explain why \(\hat{\mathbf{w}}^*\) is the eigenvector for which \(J(\hat{\mathbf{w}})\) is the maximum eigenvalue of \(\mathbf{S}_w^{-1} \mathbf{S}.\)
+
+\subsection*{(c)}
+Explain why \(\mathbf{S}_b \hat{\mathbf{w}}\) is always in the direction of \(\mathbf{m_1} - \mathbf{m_2}\) and thus show that 
+\[
+  \hat{\mathbf{w}}^* = \text{const.} \cdot \mathbf{S}_w^{-1} (\mathbf{m_1} - \mathbf{m_2})
+\]
+
+}
+{\Large 
+
+\section*{2.}
+Another way to optimize Fisher's linear discriminant (suggested by Barry Fridling):
+
+\subsection*{(a)} 
+Show that for any two real vectors \(\mathbf{x}\) and \(\mathbf{y}\) 
+\[
+  (\mathbf{x}^T \mathbf{y})^2 \leq (\mathbf{x}^T \mathbf{x}) (\mathbf{y}^T \mathbf{y}), \quad (\text{Cacuhy-Schwarz})
+\]
+
+\subsection*{(b)}
+Show that if the \(\lambda_k\) are positive,
+\[
+  \left(\sum_{k=1}^{N} x_k y_k \right)^2 \leq \left( \sum_{k=1}^{N} \lambda_k x^2_k \right) \left( \sum_{k=1}^{N} y^2_k / \lambda_k \right).
+\]
+
+\subsection*{(c)}
+Thus, show that for \(\mathbf{A}\) positive definite
+\[
+  (\mathbf{x}^T \mathbf{y})^2 \leq (\mathbf{x}^T \mathbf{Ax}) (\mathbf{y}^T \mathbf{A}^{-1} \mathbf{y}).
+\]
+
+\subsection*{(d)}
+By letting \(\mathbf{A} = \mathbf{S_w}\) in the expression above, and writing 
+\[
+  J(\hat{\mathbf{w}}) = \frac{|\hat{\mathbf{w}}^T (\mathbf{m_1} - \mathbf{m_2})|^2}{\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}}}
+\]
+show again that 
+\[
+  \hat{\mathbf{w}}^* = \text{const.} \cdot \mathbf{S}_w^{-1} (\mathbf{m_1} - \mathbf{m_2}).
+\]
+
+}
+{\Large 
+
+\section*{3.}
+Using the Optdigits dataset from the UCI repository, implement PCA. Reconstruct the digit images and calculate the error \(E(n) = \sum_{j=1}^{m} \lVert \hat{\mathbf{x}}_{j,n} - \mathbf{x}_j \rVert^2 \) for various values of \(n\), the number of principal components included in the reconstruction of each image. Plot \(E(n)\) versus \(n\). \\ \\
+
+
+}
+
+\end{document}
