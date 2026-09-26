@@ -34,15 +34,94 @@ By writing \(\frac{d J(\hat{\mathbf{w}})}{d \hat{\mathbf{w}}} = 0\), show that
 \[
   \mathbf{S}_w^{-1} \mathbf{S}_b \hat{\mathbf{w}} = J(\hat{\mathbf{w}}) \hat{\mathbf{w}}.
 \]
+We aim to take the derivative, and setting this to 0 essentially indicates that we're trying to find the maximum of \(J(\hat{\mathbf{w}})\) itself. We see from what we are given that
+\[
+  J(\hat{\mathbf{w}}) = \frac{\hat{\mathbf{w}}^T \mathbf{S}_b \hat{\mathbf{w}}}{\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}}}
+\]
+and we take the derivative accordingly:
+\[
+  \frac{dJ(\hat{\mathbf{w}})}{d\hat{\mathbf{w}}} = \frac{d}{d \hat{\mathbf{w}}} (\frac{\hat{\mathbf{w}}^T \mathbf{S}_b \hat{\mathbf{w}}}{\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}}})
+\]
+using the quotient rule, so first finding the derivatives of the denominator and numerator by taking the gradient:
+\[
+  \frac{d}{d \hat{\mathbf{w}}} (\hat{\mathbf{w}}^T \mathbf{S}_b \hat{\mathbf{w}}) = 2\mathbf{S}_b \hat{\mathbf{w}}
+\]
+\[
+  \frac{d}{d \hat{\mathbf{w}}} (\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}}) = 2\mathbf{S}_w \hat{\mathbf{w}}
+\]
+and plugging back in:
+\[
+  \frac{dJ(\hat{\mathbf{w}})}{d\hat{\mathbf{w}}} = \frac{(\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}})(2\mathbf{S}_b \hat{\mathbf{w}}) - (\hat{\mathbf{w}}^T \mathbf{S}_b \hat{\mathbf{w}})(2\mathbf{S}_w \hat{\mathbf{w}})}{(\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}})^2}
+\]
+and solving by setting to 0:
+\[
+  0 = \frac{(\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}})(2\mathbf{S}_b \hat{\mathbf{w}}) - (\hat{\mathbf{w}}^T \mathbf{S}_b \hat{\mathbf{w}})(2\mathbf{S}_w \hat{\mathbf{w}})}{(\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}})^2}
+\]
+\[
+  0 = (\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}})(2\mathbf{S}_b \hat{\mathbf{w}}) - (\hat{\mathbf{w}}^T \mathbf{S}_b \hat{\mathbf{w}})(2\mathbf{S}_w \hat{\mathbf{w}})
+\]
+\[
+  (\hat{\mathbf{w}}^T \mathbf{S}_b \hat{\mathbf{w}})(2\mathbf{S}_w \hat{\mathbf{w}}) = (\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}})(2\mathbf{S}_b \hat{\mathbf{w}})
+\]
+\[
+  \frac{(\hat{\mathbf{w}}^T \mathbf{S}_b \hat{\mathbf{w}})(2\mathbf{S}_w \hat{\mathbf{w}})}{(\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}})} = (2\mathbf{S}_b \hat{\mathbf{w}})
+\]
+\[
+  \frac{\hat{\mathbf{w}}^T \mathbf{S}_b \hat{\mathbf{w}}}{\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}}} \mathbf{S}_w \hat{\mathbf{w}} = \mathbf{S}_b \hat{\mathbf{w}}
+\]
+\[
+  J(\hat{\mathbf{w}}) \mathbf{S}_w \hat{\mathbf{w}} = \mathbf{S}_b \hat{\mathbf{w}}
+\]
+\[
+  J(\hat{\mathbf{w}}) \hat{\mathbf{w}} = \mathbf{S}_w^{-1}\mathbf{S}_b \hat{\mathbf{w}}
+\]
+\[
+  \mathbf{S}_w^{-1}\mathbf{S}_b \hat{\mathbf{w}} = J(\hat{\mathbf{w}}) \hat{\mathbf{w}}
+\]
+exactly as we sought to find. 
 
 \subsection*{(b)}
-Explain why \(\hat{\mathbf{w}}^*\) is the eigenvector for which \(J(\hat{\mathbf{w}})\) is the maximum eigenvalue of \(\mathbf{S}_w^{-1} \mathbf{S}.\)
+Explain why \(\hat{\mathbf{w}}^*\) is the eigenvector for which \(J(\hat{\mathbf{w}})\) is the maximum eigenvalue of \(\mathbf{S}_w^{-1} \mathbf{S}.\) \\ \\
+As we showed in part (a), we have \(\mathbf{S}_w^{-1}\mathbf{S}_b \hat{\mathbf{w}} = J(\hat{\mathbf{w}}) \hat{\mathbf{w}}\). Looking at the standard definition of an eigenvector, with \(Ax = \lambda x\), we can map the terms accordingly to see that we have \(A = \mathbf{S}_w^{-1}\mathbf{S}_b\) and \(\lambda = J(\hat{\mathbf{w}})\), i.e. we have eigenvector \(x\) as \(\hat{\mathbf{w}}\). The problem statement then defines \(\hat{\mathbf{w}}^*\) as the vector that maximizes \(J(\hat{\mathbf{w}})\), which we now see is the corresponding eigenvalue to \(\mathbf{S}_w^{-1}\mathbf{S}_b\), so we have to be selecting the maximizing corresponding eigenvector here. 
 
 \subsection*{(c)}
 Explain why \(\mathbf{S}_b \hat{\mathbf{w}}\) is always in the direction of \(\mathbf{m_1} - \mathbf{m_2}\) and thus show that 
 \[
   \hat{\mathbf{w}}^* = \text{const.} \cdot \mathbf{S}_w^{-1} (\mathbf{m_1} - \mathbf{m_2})
 \]
+We were given that \(\mathbf{S}_b = (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2})^T\) -- multiply this by \(\hat{\mathbf{w}}\):
+\[
+  \mathbf{S}_b \hat{\mathbf{w}} = (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2})^T \hat{\mathbf{w}}
+\]
+We can break down \((\mathbf{m_1} - \mathbf{m_2})^T \hat{\mathbf{w}}\) into the multiplication of a row vector (as the column vectors are subtracted and then transposed) by a column vector, which results in a 1x1 matrix, which is just a constant. This shows the first part of the statement which we aimed to prove, with \(\mathbf{S}_b \hat{\mathbf{w}}\) always being in the direction of \(\mathbf{m_1} - \mathbf{m_2}\) since it multiplies out to a constant multiplied by \(\mathbf{m_1} - \mathbf{m_2}\), which obviously is always in the direction of \(\mathbf{m_1} - \mathbf{m_2}\). \\ 
+Next, we aim to prove the final equation. Start with one part of our initial derivative computation in part (a):
+\[
+  J(\hat{\mathbf{w}}) \mathbf{S}_w \hat{\mathbf{w}} = \mathbf{S}_b \hat{\mathbf{w}}
+\]
+\[
+  J(\hat{\mathbf{w}}) \mathbf{S}_w \hat{\mathbf{w}} = (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2})^T \hat{\mathbf{w}}
+\]
+\[
+  J(\hat{\mathbf{w}}) \mathbf{S}_w \hat{\mathbf{w}} = \text{const.} \cdot (\mathbf{m_1} - \mathbf{m_2}) 
+\]
+\[
+  J(\hat{\mathbf{w}}) \hat{\mathbf{w}} = \text{const.} \cdot \mathbf{S}_w^{-1} (\mathbf{m_1} - \mathbf{m_2}) 
+\]
+\[
+  J(\hat{\mathbf{w}}) \hat{\mathbf{w}} = \text{const.} \cdot \mathbf{S}_w^{-1} (\mathbf{m_1} - \mathbf{m_2}) 
+\]
+\[
+  \hat{\mathbf{w}} = \text{const.} \cdot \frac{\mathbf{S}_w^{-1} (\mathbf{m_1} - \mathbf{m_2}) }{J(\hat{\mathbf{w}})}
+\]
+We can substitute in \(\hat{\mathbf{w}}^*\) since this equation must hold for all points, this must also hold for the most optimal \(\hat{\mathbf{w}}\):
+\[
+  \hat{\mathbf{w}}^* = \text{const.} \cdot \frac{\mathbf{S}_w^{-1} (\mathbf{m_1} - \mathbf{m_2}) }{J(\hat{\mathbf{w}}^*)}
+\]
+We can also see that \(J(\hat{\mathbf{w}}^*)\) here must be a scalar as an eigenvalue, so this can also be treated as a constant, leaving us with 
+\[
+  \hat{\mathbf{w}}^* = \text{const.} \cdot \mathbf{S}_w^{-1} (\mathbf{m_1} - \mathbf{m_2})
+\]
+which is exactly what we sought to find.
 
 }
 {\Large 
