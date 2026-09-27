@@ -133,19 +133,91 @@ Another way to optimize Fisher's linear discriminant (suggested by Barry Fridlin
 Show that for any two real vectors \(\mathbf{x}\) and \(\mathbf{y}\) 
 \[
   (\mathbf{x}^T \mathbf{y})^2 \leq (\mathbf{x}^T \mathbf{x}) (\mathbf{y}^T \mathbf{y}), \quad (\text{Cacuhy-Schwarz})
+\] \\ \\
+Say that we are taking the dot product of a the linear combination of the vectors \(\mathbf{x} - a\mathbf{y}\), where \(a\) is some arbitrary constant value. We know that 
+\[
+  (\mathbf{x} - a\mathbf{y})^T(\mathbf{x} - a\mathbf{y}) \geq 0
 \]
+because the dot product of the nonzero vectors must be positive, which is also equivalent to the norm squared (these could also be 0 if either vector is 0, but we can also easily see that the inequality also holds in this situation immediately). We then continue to expand:
+\[
+  \mathbf{x}^T\mathbf{x} - (a \mathbf{y})^T \mathbf{x} - \mathbf{x}^T a \mathbf{y} + (a \mathbf{y})^T (a \mathbf{y}) \geq 0
+\]
+\[
+  \mathbf{x}^T\mathbf{x} - 2a \mathbf{x}^T \mathbf{y} + a^2 \mathbf{y}^T \mathbf{y} \geq 0
+\]
+noting that \(\mathbf{y}^T \mathbf{x} = \mathbf{x}^T \mathbf{y}\). We see that we've rearranged into what is essentially a quadratic expression -- we can try to show that the inequality holds by taking the minimum by taking the derivative and setting equal to 0: 
+\[
+  \frac{d}{da} (a^2 \mathbf{y}^T \mathbf{y} - 2a \mathbf{x}^T \mathbf{y} + \mathbf{x}^T\mathbf{x}) = 0
+\]
+\[
+  2a \mathbf{y}^T \mathbf{y} - 2 \mathbf{x}^T \mathbf{y} + 0 = 0
+\]
+\[
+  2a \mathbf{y}^T \mathbf{y} = 2 \mathbf{x}^T \mathbf{y}
+\]
+\[
+  a = \frac{\mathbf{x}^T \mathbf{y}}{\mathbf{y}^T \mathbf{y}}
+\]
+We substitute this solved value back into the original quadratic expression:
+\[
+  \mathbf{x}^T\mathbf{x} - 2 \cdot \frac{\mathbf{x}^T \mathbf{y}}{\mathbf{y}^T \mathbf{y}} \cdot \mathbf{x}^T \mathbf{y} + (\frac{\mathbf{x}^T \mathbf{y}}{\mathbf{y}^T \mathbf{y}})^2 \cdot  \mathbf{y}^T \mathbf{y} \geq 0
+\]
+\[
+  \mathbf{x}^T\mathbf{x} - 2 \cdot \frac{(\mathbf{x}^T \mathbf{y})^2}{\mathbf{y}^T \mathbf{y}} + \frac{(\mathbf{x}^T \mathbf{y})^2}{(\mathbf{y}^T \mathbf{y})^2} \cdot \mathbf{y}^T \mathbf{y} \geq 0
+\]
+\[
+  \mathbf{x}^T\mathbf{x} - 2 \cdot \frac{(\mathbf{x}^T \mathbf{y})^2}{\mathbf{y}^T \mathbf{y}} + \frac{(\mathbf{x}^T \mathbf{y})^2}{(\mathbf{y}^T \mathbf{y})^2} \cdot \mathbf{y}^T \mathbf{y} \geq 0
+\]
+\[
+  \mathbf{x}^T\mathbf{x} - 2 \cdot \frac{(\mathbf{x}^T \mathbf{y})^2}{\mathbf{y}^T \mathbf{y}} + \frac{(\mathbf{x}^T \mathbf{y})^2}{\mathbf{y}^T \mathbf{y}} \geq 0
+\]
+\[
+  \mathbf{x}^T\mathbf{x} - \frac{(\mathbf{x}^T \mathbf{y})^2}{\mathbf{y}^T \mathbf{y}} \geq 0
+\]
+\[
+  (\mathbf{x}^T\mathbf{x})({\mathbf{y}^T \mathbf{y}}) \geq (\mathbf{x}^T \mathbf{y})^2
+\]
+which we can do because we established \(\mathbf{y}\) to be nonzero and its dot product must therefore be positive. This is exactly what we originally sought to prove.
 
 \subsection*{(b)}
 Show that if the \(\lambda_k\) are positive,
 \[
   \left(\sum_{k=1}^{N} x_k y_k \right)^2 \leq \left( \sum_{k=1}^{N} \lambda_k x^2_k \right) \left( \sum_{k=1}^{N} y^2_k / \lambda_k \right).
+\] \\ \\
+We see that we unfortunately can't apply our findings from (a) directly here with these additional \(\lambda_k\) weights thrown in the mix. To compensate, let's substitute with variables that help us to cancel out these weights; let \(a_k = \sqrt{\lambda_k} x_k\) and \(b_k = y_k / \sqrt{\lambda_k}\). We also have \(x_k = a_k / \sqrt{\lambda_k}\) and \(y_k = b_k \sqrt{\lambda_k}\). Let's substitute accordingly:
+\[
+  \left(\sum_{k=1}^{N} \frac{a_k}{\sqrt{\lambda_k}} \cdot b_k \sqrt{\lambda_k} \right)^2 \leq \left( \sum_{k=1}^{N} \lambda_k (\frac{a_k}{\sqrt{\lambda_k}})^2 \right) \left( \sum_{k=1}^{N} \frac{(b_k \sqrt{\lambda_k})^2}{\lambda_k} \right)
 \]
+\[
+  \left(\sum_{k=1}^{N} \frac{a_k b_k \sqrt{\lambda_k}}{\sqrt{\lambda_k}} \right)^2 \leq \left( \sum_{k=1}^{N} \frac{\lambda_k a_k^2}{\lambda_k} \right) \left( \sum_{k=1}^{N} \frac{b_k^2 \lambda_k}{\lambda_k} \right)
+\]
+\[
+  \left(\sum_{k=1}^{N} a_k b_k \right)^2 \leq \left( \sum_{k=1}^{N} a_k^2 \right) \left( \sum_{k=1}^{N} b_k^2 \right)
+\]
+Here, we now see that we can directly apply the statement from part (a) to say that this inequality holds. We do note that as the problem statement indicates, all \(\lambda_k\) must be positive, or else we cannot properly take the square roots of these values. 
 
 \subsection*{(c)}
 Thus, show that for \(\mathbf{A}\) positive definite
 \[
   (\mathbf{x}^T \mathbf{y})^2 \leq (\mathbf{x}^T \mathbf{Ax}) (\mathbf{y}^T \mathbf{A}^{-1} \mathbf{y}).
+\] \\ \\
+By definition, we know that a positive definite matrix is a symmetric matrix with positive eigenvalues. We also know that this means that we can perform spectral decomposition of \(\mathbf{A}\) into \(\mathbf{A} = \mathbf{Q} \mathbf{\Lambda} \mathbf{Q}^T\), with these being the respective orthogonal matrices with the  eigenvectors in its columns and the diagonal eigenvalue matrix. From this, we can easily see that \(\mathbf{A}^{-1} = \mathbf{Q} \mathbf{\Lambda}^{-1} \mathbf{Q}^T\) as well. From here, let's define the following variables with the goal of eventually using our findings from the previous part of the problem; let \(\mathbf{u} = \mathbf{Q}^T \mathbf{x}\) and \(\mathbf{v} = \mathbf{Q}^T \mathbf{y}\). We see that \(\mathbf{x} = \mathbf{Q}\mathbf{u} \) and \(\mathbf{y} = \mathbf{Q} \mathbf{v}\) accordingly. We can now set the following expressions, starting with what we want to prove in the probelm statement:
+\[
+  \mathbf{x}^T \mathbf{y} = (\mathbf{Q}\mathbf{u})^T \mathbf{Q}\mathbf{v} = \mathbf{u}^T \mathbf{Q}^T \mathbf{Q}\mathbf{v} = \mathbf{u}^T I \mathbf{v} = \mathbf{u}^T \mathbf{v} = \sum_{k=1}^{N} u_k v_k
 \]
+And for the right hand side, also expanding:
+\[
+  \mathbf{x}^T \mathbf{A} \mathbf{x} = \mathbf{x}^T \mathbf{Q} \mathbf{\Lambda} \mathbf{Q}^T \mathbf{x} = \mathbf{u}^T \mathbf{\Lambda} \mathbf{u} = \sum_{k=1}^{N} \lambda_k u_k^2
+\]
+and 
+\[
+  \mathbf{y}^T \mathbf{A}^{-1} \mathbf{y} = \mathbf{v}^T \mathbf{\Lambda}^{-1} \mathbf{v} = \sum_{k=1}^{N} \frac{v_k^2}{\lambda_k}
+\]
+We can now substitute into the inequality provided in the problem statement accordingly:
+\[
+  (\sum_{k=1}^{N} u_k v_k)^2 \leq (\sum_{k=1}^{N} \lambda_k u_k^2) (\sum_{k=1}^{N} \frac{v_k^2}{\lambda_k}).
+\]
+which we see exactly fits the inequality we showed to be true in part (b), so we can say that the inequality holds as well.
 
 \subsection*{(d)}
 By letting \(\mathbf{A} = \mathbf{S_w}\) in the expression above, and writing 
@@ -155,7 +227,58 @@ By letting \(\mathbf{A} = \mathbf{S_w}\) in the expression above, and writing
 show again that 
 \[
   \hat{\mathbf{w}}^* = \text{const.} \cdot \mathbf{S}_w^{-1} (\mathbf{m_1} - \mathbf{m_2}).
+\] \\ \\
+In the previous problem part, we showed 
+\[
+  (\mathbf{x}^T \mathbf{y})^2 \leq (\mathbf{x}^T \mathbf{Ax}) (\mathbf{y}^T \mathbf{A}^{-1} \mathbf{y})
 \]
+Now, we can substitute in \(\mathbf{A} = \mathbf{S_w}, \mathbf{x} = \hat{\mathbf{w}}, \mathbf{y} = (\mathbf{m_1} - \mathbf{m_2})\), we can apply this directly:
+\[
+  (\hat{\mathbf{w}}^T (\mathbf{m_1} - \mathbf{m_2}))^2 \leq (\hat{\mathbf{w}}^T \mathbf{S_w} \hat{\mathbf{w}}) ((\mathbf{m_1} - \mathbf{m_2})^T \mathbf{S_w}^{-1} (\mathbf{m_1} - \mathbf{m_2}))
+\]
+Knowing that we are trying to get something that matches up with \(J(\hat{\mathbf{w}})\), we can divide both sides by \(\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}}\):
+\[
+  \frac{(\hat{\mathbf{w}}^T (\mathbf{m_1} - \mathbf{m_2}))^2}{\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}}} \leq \frac{(\hat{\mathbf{w}}^T \mathbf{S_w} \hat{\mathbf{w}}) ((\mathbf{m_1} - \mathbf{m_2})^T \mathbf{S_w}^{-1} (\mathbf{m_1} - \mathbf{m_2}))}{\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}}}
+\]
+\[
+  \frac{(\hat{\mathbf{w}}^T (\mathbf{m_1} - \mathbf{m_2}))^2}{\hat{\mathbf{w}}^T \mathbf{S}_w \hat{\mathbf{w}}} \leq (\mathbf{m_1} - \mathbf{m_2})^T \mathbf{S_w}^{-1} (\mathbf{m_1} - \mathbf{m_2})
+\]
+\[
+  J(\hat{\mathbf{w}}) \leq (\mathbf{m_1} - \mathbf{m_2})^T \mathbf{S_w}^{-1} (\mathbf{m_1} - \mathbf{m_2})
+\]
+We are trying to maximize \(J(\hat{\mathbf{w}})\) here. Translating this, we would need both sides to be equal to get the maximum value. From what we found in part (a), with the variable replacement, we know that both sides will equate when \(\mathbf{x} = \text{const.} \cdot \mathbf{y}\). Using the new definitions and substitutions from parts (b), we can now translate this into the statement \(a_k = \text{const.} \cdot b_k\). Now substituting accordingly using our previous definitions:
+\[
+  \sqrt{\lambda_k} x_k = \text{const.} \cdot y_k / \sqrt{\lambda_k}
+\]
+\[
+  x_k = \text{const.} \cdot \frac{y_k}{\lambda_k}
+\]
+and substituting for the variables in part (c), we have that \(u_k = \text{const.} \cdot \frac{v_k}{\lambda_k}\) which we can bring back to matrix space as 
+\[
+  \mathbf{u} = \text{const.} \cdot \mathbf{\Lambda}^{-1} \mathbf{v}
+\]
+and finally substituting once more:
+\[
+  \mathbf{u} = \text{const.} \cdot \mathbf{\Lambda}^{-1} \mathbf{v}
+\]
+\[
+  \mathbf{Q}^T \mathbf{x} = \text{const.} \cdot \mathbf{\Lambda}^{-1} \mathbf{Q}^T \mathbf{y}
+\]
+multipplying both sides by \(\mathbf{Q}\):
+\[
+  \mathbf{Q} \mathbf{Q}^T \mathbf{x} = \text{const.} \cdot \mathbf{Q} \mathbf{\Lambda}^{-1} \mathbf{Q}^T \mathbf{y}
+\]
+\[
+  \mathbf{x} = \text{const.} \cdot \mathbf{A}^{-1} \mathbf{y}
+\]
+Bringing this all the way back, we had remapped these corresponding variables, so to find \(\hat{\mathbf{w}}^*\), we optimize for \(\mathbf{x}\), so we would therefore substitute accordingly:
+\[
+  \mathbf{x} = \text{const.} \cdot \mathbf{A}^{-1} \mathbf{y}
+\]
+\[
+  \hat{\mathbf{w}}^* = \text{const.} \cdot \mathbf{S}_w^{-1} (\mathbf{m_1} - \mathbf{m_2})
+\]
+which is exactly what we sought to find. 
 
 }
 {\Large 
