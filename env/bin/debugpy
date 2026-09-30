@@ -1,0 +1,8 @@
+#!/bin/sh
+'''exec' "/Users/mhuang19/Documents/edu/jhu/Data Mining (EN.625.740.81)/EN.625.740.81/env/bin/python" "$0" "$@"
+' '''
+import sys
+from debugpy.server.cli import main
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(main())
