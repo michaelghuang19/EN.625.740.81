@@ -285,7 +285,115 @@ which is exactly what we sought to find.
 
 \section*{3.}
 Using the Optdigits dataset from the UCI repository, implement PCA. Reconstruct the digit images and calculate the error \(E(n) = \sum_{j=1}^{m} \lVert \hat{\mathbf{x}}_{j,n} - \mathbf{x}_j \rVert^2 \) for various values of \(n\), the number of principal components included in the reconstruction of each image. Plot \(E(n)\) versus \(n\). \\ \\
+I ran the following code in a python notebook, which I've also attached as an html file in the submission:
+\begin{spverbatim}
+# %% [markdown]
+# ## Problem 3
+# 
+# We aim to implement PCA on the Optdigits features. We will calculate and plot the reconstruction error E(n) for different values of n.
 
+# %% [markdown]
+# ### Imports and Setup
+
+# %%
+import numpy as np
+import matplotlib.pyplot as plt
+
+from ucimlrepo import fetch_ucirepo 
+
+# %%
+optical_recognition_of_handwritten_digits = fetch_ucirepo(id=80) 
+
+# data samples with attributes
+X_df = optical_recognition_of_handwritten_digits.data.features 
+# data samples with digit outcomes
+y_df = optical_recognition_of_handwritten_digits.data.targets 
+
+# %%
+print(X_df)
+
+# %%
+def calculate_error_for_n(X_original, X_normalized, eigenvectors_sorted, mu, n):
+    """
+    Project a corresponding matrix using the top n eigenvectors, 
+    then reconstructing the data matrix and returning the total squared reconstruction error E(n).
+    """
+    W = eigenvectors_sorted[:, :n]
+    
+    z = np.dot(X_normalized, W)
+    X_reconstructed = np.dot(z, W.T) + mu
+    
+    return np.sum((X_reconstructed - X_original) ** 2)
+
+# %% [markdown]
+# #### 1. Standardize data. For each feature, subtract the mean to normalize every feature
+
+# %%
+# Probably fine here since the column names aren't super meaningful
+X = X_df.to_numpy()
+
+mu = np.mean(X, axis=0)
+X_normalized = X - mu
+print(X_normalized)
+
+# %% [markdown]
+# #### 2. Compute covariance matrix
+
+# %%
+# rowvar=False since our variables here are as columns
+cov_matrix = np.cov(X_normalized, rowvar=False)
+print(cov_matrix)
+
+# %% [markdown]
+# #### 3. Calculate eigenvectors and eigenvalues
+
+# %%
+eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)
+print(f"{eigenvalues=}")
+print(f"{eigenvectors=}")
+
+# %% [markdown]
+# #### 4. Sort and select top n relevant components to form the projection matrix
+
+# %%
+# idx to use to sort both eigenvalues and eigenvectors
+sorted_eigenvalues_idx = np.argsort(eigenvalues)[::-1]
+print(f"{sorted_eigenvalues_idx=}")
+
+eigenvalues_sorted = eigenvalues[sorted_eigenvalues_idx]
+eigenvectors_sorted = eigenvectors[:, sorted_eigenvalues_idx]
+print(f"{eigenvalues_sorted=}")
+print(f"{eigenvectors_sorted=}")
+
+# %% [markdown]
+# #### For each n:
+# #### 5. Project the centered data into the lower-dimensional space, giving us final principal component scores
+# #### 6. Reconstruct the data by back-projecting into original dimension of space
+# #### 7. Take the errors accordingly
+
+# %%
+# For completeness, we might as well try for all possible values of n
+
+errors = [calculate_error_for_n(X, X_normalized, eigenvectors_sorted, mu, n) for n in range(1, X.shape[1])]
+print(errors)
+
+# %% [markdown]
+# #### 7. Plot errors accordingly
+
+# %%
+plt.plot(range(1, X.shape[1]), errors, "-o")
+plt.xlabel("Number of Principal Components (n)")
+plt.ylabel("Reconstruction Error E(n)")
+plt.title("PCA Reconstruction Error vs. Number of Components for Optdigits")
+plt.grid(True)
+plt.savefig("3_graph.png")
+plt.show()
+\end{spverbatim}
+Here was the result:
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=490pt]{3_graph.png}
+\end{figure} 
 
 
 }
