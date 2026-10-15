@@ -51,7 +51,27 @@ is the sample mean, \(\bar{\mathbf{x}} = \frac{1}{n} \sum_{k=1}^{n} \mathbf{x_k}
 
 \section*{3.}
 Consider a linear classifier with discriminant functions \(g_i(\mathbf{x}) = \mathbf{w}_\mathbf{i}^{\mathbf{T}} \mathbf{x} + w_{i0}, i = 1, \dots, c\). Show that the decision regions are convex by showing that if \(\mathbf{x}_1 \in \mathcal{R}_i\) and \(\mathbf{x}_2 \in \mathcal{R}_i\) then \(\lambda \mathbf{x}_1 + (1 - \lambda) \mathbf{x}_2 \in \mathcal{R}_i\) if \(0 \leq \lambda \leq 1\). \\ \\
-
+By definition, we know that the linear machine will assign \(\mathbf{x}\) to class \(i\) if \(g_i(\mathbf{x}) > g_j(\mathbf{x})\) for all \(j \neq i\); as a byproduct of this, we also know that \(g_i(\mathbf{x_1}) > g_j(\mathbf{x_1})\) and \(g_i(\mathbf{x_2}) > g_j(\mathbf{x_2})\). As suggested by the problem statement, we aim to show that the decision regions are convex by showing that arbitrary point \(\lambda \mathbf{x_1} + (1 - \lambda) \mathbf{x_2}\) lies within the classification region with \(0 \leq \lambda \leq 1\). We substitute this value for \(\mathbf{x}\) into the linear classifier discriminant function:
+\[
+  g_i(\mathbf{x}) = \mathbf{w_i^T}(\lambda \mathbf{x_1} + (1 - \lambda) \mathbf{x_2}) + w_{i0} 
+\]
+Looking at this -- intuitively, we can see that this essentially is a complementary weighting of the two vectors since they sum to 1. We can therefore redistribute accordingly, with the bias distributed between the \(\lambda\) and \(1 - \lambda\) weights, since this still adds up to \(1 \cdot w_{i0}\):
+\[
+  = \lambda(\mathbf{w_i^T x_1} + w_{i0}) + (1 - \lambda)(\mathbf{w_i^T x_2} + w_{i0})
+\]
+and then substituting in the linear discriminant function definition accordingly:
+\[
+  g_i(\mathbf{x}) = \lambda g_i(\mathbf{x_1}) + (1 - \lambda) g_i(\mathbf{x_2})
+\]
+Based on the inequalities we previously established, we also know that \(\lambda g_i(\mathbf{x_1}) \geq \lambda g_j(\mathbf{x_1}) \), and \((1 - \lambda) g_i(\mathbf{x_2}) \geq (1 - \lambda) g_i(\mathbf{x_2})\), since multiplying by the \(0 \leq \lambda \leq 1\) doesn't change the sign of the inequality but introduces the potential of possible equality in the case that either \(\lambda\) or \(1 - \lambda\) is 0. Combining this with the actual discriminant function that we found for \(\mathbf{x}\), we see that we have 
+\[
+  \lambda g_i(\mathbf{x_1}) + (1 - \lambda) g_i(\mathbf{x_2}) > \lambda g_j(\mathbf{x_1}) + (1 - \lambda) g_j(\mathbf{x_2})
+\]
+with this being a strict inequality since only one of the weights being able to be 0, which is the only case of equality, thus leaving the other term to be a strict inequality. We already solved for this previously, so we are essentially just left with 
+\[
+  g_i(\mathbf{x}) > g_j(\mathbf{x})
+\]
+which shows us that this intermediate point satisfies the linear machine assignment rule that we first started with, which therefore indicates that indeed \(\mathbf{x} \in \mathcal{R}_i\) as we hoped to show.
 
 }
 {\Large 
@@ -73,8 +93,51 @@ where \(\delta_{ij} = \begin{cases}
   0, & \text{otherwise.}
 \end{cases}
 \) \\ \\
-
-
+We have that \(y_i = \frac{\exp(a_i)}{\sum_k \exp(a_k)}\). Generally, we use the quotient rule here:
+\[
+  \frac{\partial y_i}{\partial a_j} = \frac{(\frac{\partial}{\partial a_j} \exp(a_i)) \cdot (\sum_k \exp(a_k)) - \exp(a_i) \cdot \frac{\partial}{\partial a_j} \sum_k \exp(a_k)}{(\sum_k \exp(a_k))^2} 
+\]
+Now let's start case by case for the value of \(\delta_{ij}\). For \(i \neq j\): \\
+\[
+  \frac{\partial y_i}{\partial a_j} = \frac{0 \cdot (\sum_k \exp(a_k)) - \exp(a_i) \cdot \frac{\partial}{\partial a_j} \sum_k \exp(a_k)}{(\sum_k \exp(a_k))^2} 
+\]
+\[
+  = \frac{- \exp(a_i) \cdot \frac{\partial}{\partial a_j} \sum_k \exp(a_k)}{(\sum_k \exp(a_k))^2} 
+\]
+\[
+  = \frac{- \exp(a_i) \cdot \exp(a_j)}{(\sum_k \exp(a_k))^2} 
+\]
+\[
+  = \frac{- \exp(a_i) }{\sum_k \exp(a_k)} \cdot \frac{\exp(a_j)}{\sum_k \exp(a_k)}
+\]
+and substituting back based on the form of \(y_i\) that we had before:
+\[
+  = -y_i y_j
+\]
+\[
+  \frac{\partial y_i}{\partial a_j} = y_i(0 - y_j)
+\]
+which indeed fits the equation we aimed to find with the corresponding value of \(\delta_{ij} = 0\). Now solving for when \(i = j\):
+\[
+  \frac{\partial y_i}{\partial a_j} = \frac{\exp(a_i) \cdot (\sum_k \exp(a_k)) - \exp(a_i) \cdot \frac{\partial}{\partial a_j} \sum_k \exp(a_k)}{(\sum_k \exp(a_k))^2} 
+\]
+\[
+  = \frac{\exp(a_i) \cdot (\sum_k \exp(a_k)) - \exp(a_i) \cdot \exp(a_j)}{(\sum_k \exp(a_k))^2}
+\]
+\[
+  = \frac{\exp(a_i) \cdot (\sum_k \exp(a_k))}{(\sum_k \exp(a_k))^2} - \frac{\exp(a_i) \cdot \exp(a_j)}{\sum_k \exp(a_k) \cdot \sum_k \exp(a_k)}
+\]
+\[
+  = \frac{\exp(a_i)}{\sum_k \exp(a_k)} - \frac{\exp(a_i)}{\sum_k \exp(a_k)} \cdot \frac{\exp(a_j)}{\sum_k \exp(a_k)}
+\]
+and doing the same substitutions:
+\[
+  = y_i - y_i \cdot y_j
+\]
+\[
+  \frac{\partial y_i}{\partial a_j} = y_i(1 - y_j)
+\]
+which also fits the equation we aimed to find with corresponding value \(\delta_{ij} = 1\). 
 }
 {\Large 
 
