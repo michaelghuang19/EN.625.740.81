@@ -25,14 +25,84 @@
 \section*{1.}
 
 \subsection*{(a)} 
+Show that the distance from the hyperplane \(g(\mathbf{x}) = \mathbf{x}^\mathbf{T} \mathbf{x} + w_0 = 0\) to the point \(\mathbf{x}_a\) is \(|g(\mathbf{x}_a)| / \lVert \mathbf{w} \rVert\) by minimizing \(\lVert \mathbf{x} - \mathbf{x}_a \rVert^2\) subject to the constraint \(g(\mathbf{x}) = 0\). \\ \\
 
-So the total is \(3 \times 16 + 6 = \fbox{\textbf{54 outcomes}}\).
 
 \subsection*{(b)}
+Show that the projection of \(\mathbf{x}_a\) onto the hyperplane is given by 
+\[
+  \mathbf{x}_\mathbf{p} = \mathbf{x}_a - \frac{g(\mathbf{x}_a)}{\lVert \mathbf{w} \rVert^2} \mathbf{w}
+\] \\
 
-\subsection*{(c)}
 
-% End of the large subsection
+}
+{\Large 
+
+\section*{2.}
+Let \(\mathbf{x_1}, \dots, \mathbf{x_n}\) be \(n\) \(q\)-dimensional samples and \(Q\) be any nonsingular positive definite \(q \times q\) matrix. Show that the vector \(\mathbf{x}\) that minimizes 
+\[
+  \sum_{k=1}^{n} (\mathbf{x_k} - \mathbf{x})^T Q^{-q} (\mathbf{x_k} - \mathbf{x})
+\]
+is the sample mean, \(\bar{\mathbf{x}} = \frac{1}{n} \sum_{k=1}^{n} \mathbf{x_k}\). \\ \\
+
+
+}
+{\Large 
+
+\section*{3.}
+Consider a linear classifier with discriminant functions \(g_i(\mathbf{x}) = \mathbf{w}_\mathbf{i}^{\mathbf{T}} \mathbf{x} + w_{i0}, i = 1, \dots, c\). Show that the decision regions are convex by showing that if \(\mathbf{x}_1 \in \mathcal{R}_i\) and \(\mathbf{x}_2 \in \mathcal{R}_i\) then \(\lambda \mathbf{x}_1 + (1 - \lambda) \mathbf{x}_2 \in \mathcal{R}_i\) if \(0 \leq \lambda \leq 1\). \\ \\
+
+
+}
+{\Large 
+
+\section*{4.}
+In the gradient descent algorithm \(\mathbf{a}_{k+1}\) is obtained from \(\mathbf{a}_k\) by 
+
+
+}
+{\Large 
+
+\section*{5.}
+Show that the partial derivatives of the functions \(y_i = \exp(a_i) / \sum_k \exp(a_k)\) used in multiple class logistic discrimination are given by 
+\[
+  \frac{\partial y_i}{\partial a_j} = y_i (\delta_{ij} - y_j)
+\]
+where \(\delta_{ij} = \begin{cases}
+  1, & i = j, \\ 
+  0, & \text{otherwise.}
+\end{cases}
+\) \\ \\
+
+
+}
+{\Large 
+
+\section*{6.}
+In Module 1 we introduced nine (9) datasets. The data files are posted here in Module 9. Choose three (3) of these datasets and for each of the three:
+
+\subsection*{(a)} 
+
+\subsubsection*{i.}
+
+\subsubsection*{ii.}
+
+\subsection*{(a)} 
+
+\subsubsection*{i.}
+
+\subsubsection*{ii.}
+
+\subsubsection*{iii.}
+
+\subsubsection*{iv.}
+
+\paragraph*{A.}
+
+
+\paragraph*{B.}
+
+
 }
 
 \end{document}
