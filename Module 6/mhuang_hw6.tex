@@ -25,15 +25,81 @@
 \section*{1.}
 
 \subsection*{(a)} 
-Show that the distance from the hyperplane \(g(\mathbf{x}) = \mathbf{x}^\mathbf{T} \mathbf{x} + w_0 = 0\) to the point \(\mathbf{x}_a\) is \(|g(\mathbf{x}_a)| / \lVert \mathbf{w} \rVert\) by minimizing \(\lVert \mathbf{x} - \mathbf{x}_a \rVert^2\) subject to the constraint \(g(\mathbf{x}) = 0\). \\ \\
-
+Show that the distance from the hyperplane \(g(\mathbf{x}) = \mathbf{w}^\mathbf{T} \mathbf{x} + w_0 = 0\) to the point \(\mathbf{x}_a\) is \(|g(\mathbf{x}_a)| / \lVert \mathbf{w} \rVert\) by minimizing \(\lVert \mathbf{x} - \mathbf{x}_a \rVert^2\) subject to the constraint \(g(\mathbf{x}) = 0\). \\ \\
+We aim to show the statement by minimizing \(\lVert \mathbf{x} - \mathbf{x}_a \rVert^2\) with \(g(\mathbf{x}) = 0\). We build the corresponding Lagrangian which we can then attempt to minimize:
+\[
+  L(\mathbf{x}, \lambda) = f(\mathbf{x}) + \lambda g(\mathbf{x})
+\]
+\[
+  = \lVert \mathbf{x} - \mathbf{x}_a \rVert^2 + \lambda \cdot (\mathbf{w}^\mathbf{T} \mathbf{x} + w_0)
+\]
+We can cheat a bit and multiple the first term by \(\frac{1}{2}\) to make taking the derivative and then solving easier; this is fine since we are solving for \(\mathbf{x}\) rather than the value of the minimum itself, so we don't need to account for this later. 
+\[
+  = \frac{1}{2} \cdot \lVert \mathbf{x} - \mathbf{x}_a \rVert^2 + \lambda \cdot (\mathbf{w}^\mathbf{T} \mathbf{x} + w_0)
+\]
+Let's now take the derivative with respect to \(\mathbf{x}\):
+\[
+  \frac{\partial}{\partial \mathbf{x}} L(\mathbf{x}) = (\mathbf{x} - \mathbf{x}_a) + \lambda \mathbf{w}
+\]
+and now setting to 0 to solve for the minimum:
+\[
+  0 = \mathbf{x} - \mathbf{x}_a + \lambda \mathbf{w}
+\]
+\[
+  \mathbf{x} = \mathbf{x}_a - \lambda \mathbf{w}
+\]
+Plugging this back into the original hyperplane equation:
+\[
+  g(\mathbf{x}) = \mathbf{w^T x} + w_0 = 0
+\]
+\[
+  \mathbf{w^T} (\mathbf{x}_a - \lambda \mathbf{w}) + w_0 = 0
+\]
+\[
+  \mathbf{w^T} \mathbf{x}_a - \lambda \mathbf{w^T} \mathbf{w} + w_0 = 0
+\]
+\[
+  (\mathbf{w^T} \mathbf{x}_a + w_0) - \lambda \lVert \mathbf{w} \rVert^2 = 0
+\]
+\[
+  g(\mathbf{x}_a) - \lambda \lVert \mathbf{w} \rVert^2 = 0
+\]
+\[
+  \lambda \lVert \mathbf{w} \rVert^2 = g(\mathbf{x}_a)
+\]
+\[
+  \lambda = \frac{g(\mathbf{x}_a)}{\lVert \mathbf{w} \rVert^2}
+\]
+Looking back at our initial solution to the derivative of the Langrangian, from \(\mathbf{x} = \mathbf{x}_a - \lambda \mathbf{w}\), we can see that \(\mathbf{x} - \mathbf{x}_a = -\lambda \mathbf{w}\). So to find this distance, we just take the norm of this, i.e. \(\lVert -\lambda \mathbf{w} \rVert\):
+\[
+  \lVert -\lambda \mathbf{w} \rVert = \lVert \lambda \rVert \lVert \mathbf{w} \rVert
+\]
+\[
+  = \frac{\lVert g(\mathbf{x}_a) \rVert}{\lVert \mathbf{w} \rVert^2}  \cdot \lVert \mathbf{w} \rVert
+\]
+\[
+  = \frac{\lVert g(\mathbf{x}_a) \rVert}{\lVert \mathbf{w} \rVert} = \frac{g(\mathbf{x}_a)}{\lVert \mathbf{w} \rVert} 
+\]
+exactly as we sought to show. 
 
 \subsection*{(b)}
 Show that the projection of \(\mathbf{x}_a\) onto the hyperplane is given by 
 \[
   \mathbf{x}_\mathbf{p} = \mathbf{x}_a - \frac{g(\mathbf{x}_a)}{\lVert \mathbf{w} \rVert^2} \mathbf{w}
 \] \\
-
+We kind of already showed this previously, with the last part of part (a) already using the equation 
+\[
+  \mathbf{x} = \mathbf{x}_a - \lambda \mathbf{w}
+\]
+and now taking the exact point on the hyperplane, we get 
+\[
+  \mathbf{x}_p = \mathbf{x}_a - \lambda \mathbf{w}
+\]
+and plugging in the value for \(\lambda\) which we found previously:
+\[
+  \mathbf{x}_p = \mathbf{x}_a - \frac{g(\mathbf{x}_a)}{\lVert \mathbf{w} \rVert^2} \mathbf{w}
+\]
+which is exactly what we sought to show. 
 
 }
 {\Large 
@@ -41,10 +107,40 @@ Show that the projection of \(\mathbf{x}_a\) onto the hyperplane is given by
 \section*{2.}
 Let \(\mathbf{x_1}, \dots, \mathbf{x_n}\) be \(n\) \(q\)-dimensional samples and \(Q\) be any nonsingular positive definite \(q \times q\) matrix. Show that the vector \(\mathbf{x}\) that minimizes 
 \[
-  \sum_{k=1}^{n} (\mathbf{x_k} - \mathbf{x})^T Q^{-q} (\mathbf{x_k} - \mathbf{x})
+  \sum_{k=1}^{n} (\mathbf{x_k} - \mathbf{x})^T Q^{-1} (\mathbf{x_k} - \mathbf{x})
 \]
 is the sample mean, \(\bar{\mathbf{x}} = \frac{1}{n} \sum_{k=1}^{n} \mathbf{x_k}\). \\ \\
-
+We have the criterion function \(J(a)\) as the exact equation we are minimizing, that is, \(J(\mathbf{x}) = \sum_{k=1}^{n} (\mathbf{x_k} - \mathbf{x})^T Q^{-1} (\mathbf{x_k} - \mathbf{x})\). We therefore simply take the gradient and try to optimize accordingly:
+\[
+  \nabla_\mathbf{x} J(\mathbf{x}) = \sum_{k=1}^{n} 2 Q^{-1} (\mathbf{x_k} - \mathbf{x}) \cdot (0 - 1)
+\]
+taking the standard gradient and applying the chain rule. Continuing:
+\[
+  = \sum_{k=1}^{n} - 2 Q^{-1} (\mathbf{x_k} - \mathbf{x})
+\]
+\[
+  = - 2 Q^{-1}  \sum_{k=1}^{n} (\mathbf{x_k} - \mathbf{x})
+\]
+And optimizing by trying to solve for the minimum by setting to 0:
+\[
+  - 2 Q^{-1}  \sum_{k=1}^{n} (\mathbf{x_k} - \mathbf{x}) = 0
+\]
+\[
+  \sum_{k=1}^{n} (\mathbf{x_k} - \mathbf{x}) = 0
+\]
+\[
+  \sum_{k=1}^{n} \mathbf{x_k} - \sum_{k=1}^{n} \mathbf{x} = 0
+\]
+\[
+  \sum_{k=1}^{n} \mathbf{x_k} - n \mathbf{x} = 0
+\]
+\[
+  n \mathbf{x} = \sum_{k=1}^{n} \mathbf{x_k}
+\]
+\[
+  \mathbf{x} = \frac{1}{n} \sum_{k=1}^{n} \mathbf{x_k}
+\]
+which is indeed equivalent to the sample mean, as we sought to show. 
 
 }
 {\Large 
@@ -78,7 +174,78 @@ which shows us that this intermediate point satisfies the linear machine assignm
 
 \section*{4.}
 In the gradient descent algorithm \(\mathbf{a}_{k+1}\) is obtained from \(\mathbf{a}_k\) by 
-
+\[
+  \mathbf{a}_{k+1} = \mathbf{a}_k - \rho_k \nabla J(\mathbf{a}_k),
+\]
+where \(\rho_k\) is a positive scale factor that sets the step size. Consider the criterion function
+\[
+  J_q(\mathbf{a}) = \sum_{\mathbf{y} \in \mathcal{Y}} (\mathbf{a}^T \mathbf{y} - b)^2
+\]
+where \(\mathcal{Y}(\mathbf{a})\) is the set of samples for which \(\mathbf{a}^T \mathbf{y} \leq b \). Suppose that \(\mathbf{y}_1\) is the only sample in \(\mathcal{Y}(\mathbf{a}_k)\). Show that \(\nabla J_q(\mathbf{a}_k) = 2(\mathbf{a}_k^T \mathbf{y}_1 - b)\mathbf{y}_1\) and that the matrix of second partial derivatives is given by \(D = 2\mathbf{y}_1 \mathbf{y}_1^T\). Use this to show that when the optimal \(\rho_k\) is used in the gradient descent algorithm, 
+\[
+  \mathbf{a}_{k+1} = \mathbf{a}_k + \frac{b - \mathbf{a}^T \mathbf{y}_1}{\|\mathbf{y}_1\|^2} \mathbf{y}_1.
+\] \\
+Let's first calculate the gradient as the first thing that we want to show. Because we assume that \(\mathbf{y}_1\) is the only sample, we have 
+\[
+  J_q (\mathbf{a}_k) = (\mathbf{a}^T \mathbf{y}_1 - b)^2
+\]
+and then taking the corresponding gradient:
+\[
+  \nabla J_q (\mathbf{a}_k) = 2(\mathbf{a}_k^T \mathbf{y}_1 - b) \cdot (\mathbf{y}_1 - 0)
+\]
+\[
+  = 2(\mathbf{a}_k^T \mathbf{y}_1 - b)\mathbf{y}_1
+\]
+which matches what we expect. \\ \\
+Now, we take the second derivative to check the "matrix of second partial derivatives", first isolating \(\mathbf{a}_k\) accordingly to try and get the correct form of the matrix:
+\[
+  \nabla J_q (\mathbf{a}_k) = 2(\mathbf{a}_k^T \mathbf{y}_1 - b)\mathbf{y}_1
+\]
+\[
+  = (2\mathbf{a}_k^T \mathbf{y}_1 - 2b)\mathbf{y}_1
+\]
+\[
+  = 2 \mathbf{y}_1 \mathbf{y}_1^T  \mathbf{a}_k  - 2b\mathbf{y}_1
+\]
+and now taking the derivative again:
+\[
+  D = \frac{\partial}{\partial \mathbf{a}_k} \nabla J_q (\mathbf{a}_k) = 2 \mathbf{y}_1 \mathbf{y}_1^T - 0
+\]
+\[
+  = 2 \mathbf{y}_1 \mathbf{y}_1^T
+\]
+which also matches what we aimed to show as the value for \(D\). \\ \\
+We now move to deriving the update rule \(\mathbf{a}_{k+1}\), first starting with finding the optimal step size \(\rho_k\). By definition in the text, we have 
+\[
+  \rho_k = \frac{\lVert \nabla J_q \rVert^2}{\nabla J_q^T H\nabla J_q}
+\]
+for which \(H\) is the Hessian, which in this case is the second partial derivative matrix \(D\). Continuing onwards:
+\[
+  = \frac{(2(\mathbf{a}_k^T \mathbf{y}_1 - b)\mathbf{y}_1)^T (2(\mathbf{a}_k^T \mathbf{y}_1 - b)\mathbf{y}_1)}{(2(\mathbf{a}_k^T \mathbf{y}_1 - b)\mathbf{y}_1)^T (2\mathbf{y}_1 \mathbf{y}_1^T) (2(\mathbf{a}_k^T \mathbf{y}_1 - b)\mathbf{y}_1) }
+\]
+\[
+  = \frac{4(\mathbf{a}_k^T \mathbf{y}_1 - b)^2 \mathbf{y}_1^T \mathbf{y}_1}{8(\mathbf{a}_k^T \mathbf{y}_1 - b)^2 \mathbf{y}_1^T \mathbf{y}_1 \mathbf{y}_1^T \mathbf{y}_1}
+\] 
+\[
+  = \frac{4(\mathbf{a}_k^T \mathbf{y}_1 - b)^2 \lVert \mathbf{y}_1 \rVert^2}{8(\mathbf{a}_k^T \mathbf{y}_1 - b)^2 \lVert \mathbf{y}_1 \rVert^4}
+\] 
+\[
+  \rho_k = \frac{1}{2 \lVert \mathbf{y}_1 \rVert^2}
+\]
+And finally plugging this back in:
+\[
+  \mathbf{a}_{k+1} = \mathbf{a}_k - \rho_k \nabla J(\mathbf{a}_k)
+\]
+\[
+  = \mathbf{a}_k - (\frac{1}{2 \lVert \mathbf{y}_1 \rVert^2}) \cdot 2(\mathbf{a}_k^T \mathbf{y}_1 - b) \mathbf{y}_1
+\]
+\[
+  = \mathbf{a}_k - \frac{(\mathbf{a}_k^T \mathbf{y}_1 - b) \mathbf{y}_1}{ \lVert \mathbf{y}_1 \rVert^2}
+\]
+\[
+  \mathbf{a}_{k+1} = \mathbf{a}_k + \frac{b - \mathbf{a}_k^T \mathbf{y}_1}{\lvert \mathbf{y} \rVert^2} \mathbf{y}_1
+\]
+which is exactly what we sought to show.
 
 }
 {\Large 
