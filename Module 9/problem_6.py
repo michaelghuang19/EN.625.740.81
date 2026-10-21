@@ -25,37 +25,37 @@ while len(class_2_samples) < 100:
     class_2_samples.append(sample)
 class_2_samples = np.array(class_2_samples)
 
-# X = np.vstack((class1_samples, class2_samples))
-# y = np.hstack((np.ones(100), np.zeros(100)))
+# Create 200 x 2 matrix of samples + class labels
+x = np.vstack((class_1_samples, class_2_samples))
+y = np.hstack((np.ones(100), np.zeros(100)))
 
-# # Train a linear classifier using the Perceptron algorithm
-# clf = Perceptron(max_iter=1000, tol=1e-3)
-# clf.fit(X, y)
+# Train linear classifier using the Perceptron algorithm
+linear_classifier = Perceptron(max_iter=1000, tol=1e-5)
+linear_classifier.fit(x, y)
 
-# # Plotting
-# plt.figure(figsize=(8, 6))
+plt.figure(figsize=(8, 6))
 
-# # Create meshgrid for plotting the decision boundary
-# x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
-# y_min, y_max = X[:, 1].min() - 0.5, X[:, 1].max() + 0.5
-# xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02),
-#                      np.arange(y_min, y_max, 0.02))
+# Create meshgrid for plotting decision boundary
+x_min, x_max = x[:, 0].min() - 1, x[:, 0].max() + 1
+y_min, y_max = x[:, 1].min() - 1, x[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.05),
+                     np.arange(y_min, y_max, 0.05))
 
-# # Predict across the meshgrid
-# Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
-# Z = Z.reshape(xx.shape)
+# Predict across the meshgrid
+z_linear = linear_classifier.predict(np.c_[xx.ravel(), yy.ravel()])
+z_linear = z_linear.reshape(xx.shape)
 
-# # Plot decision boundary regions
-# plt.contourf(xx, yy, Z, alpha=0.2, cmap='coolwarm')
-# plt.contour(xx, yy, Z, colors='k', linewidths=1.5)
+# Plot points with decision boundary regions
+plt.scatter(class_1_samples[:, 0], class_1_samples[:, 1], color='blue', label="Class 1", alpha=0.5)
+plt.scatter(class_2_samples[:, 0], class_2_samples[:, 1], color='red', label="Class 2", alpha=0.5)
 
-# # Plot the generated data points
-# plt.scatter(class1_samples[:, 0], class1_samples[:, 1], color='blue', label='Class 1 ($\omega_1$)', alpha=0.7, edgecolor='k')
-# plt.scatter(class2_samples[:, 0], class2_samples[:, 1], color='red', label='Class 2 ($\omega_2$)', alpha=0.7, edgecolor='k')
+plt.contourf(xx, yy, z_linear, alpha=0.25)
+plt.contour(xx, yy, z_linear, colors="black", linewidths=1)
 
-# plt.title('Problem 6: Perceptron Decision Boundary')
-# plt.xlabel('$x_1$')
-# plt.ylabel('$x_2$')
-# plt.legend()
-# plt.grid(True, linestyle='--', alpha=0.6)
-# plt.show()
+plt.title("6. Perceptron Algorithm Decision Boundary")
+plt.xlabel("$x_1$")
+plt.ylabel("$x_2$")
+plt.legend()
+plt.savefig("problem_6_perceptron_plot.png", bbox_inches="tight")
+plt.show()
+plt.close()
