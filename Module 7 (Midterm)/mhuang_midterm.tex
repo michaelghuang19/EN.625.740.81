@@ -37,11 +37,88 @@ The columns in the file \texttt{midterm\_exam\_data.txt} are the \(X\) and \(Y\)
 
 \subsection*{(a)}
 For various values of \(n\), fit an \(n^{\text{th}}\) order cosine series \((y = \frac{a_0}{2} + \sum_{k=1}^{n} a_k \cos kx)\) to the data. What would you say is the most likely value of \(n\)? \\ \\
+I ran a python script and got the following output:
+\begin{spverbatim}
+> python problem_2.py
+          rss      rse  adj_r_2
+n                              
+0   115.87160  1.40140  0.00000
+1   107.03410  1.35846  0.06034
+2   106.96723  1.36990  0.04446
+3    38.57145  0.82993  0.64929
+4    37.30363  0.82356  0.65465
+5    13.40291  0.49820  0.87362
+6    13.23616  0.49974  0.87284
+7    13.18306  0.50351  0.87091
+8    13.10839  0.50698  0.86913
+9    12.84362  0.50683  0.86920
+10   12.78047  0.51071  0.86719
+\end{spverbatim}
+Looking at this, the RSS seems to really improve and stabilize around \(\boxed{n=5}\) and not really improve drastically afterwards. This is the same case with the R squared and the RSE values too. I also plotted to see if this seemed sane, and it definitely seems to fit pretty well: 
+\begin{figure}[h!]
+  \includegraphics[width=400pt]{problem_2_a.png}
+\end{figure}
+I got this from running the following python code:
+\begin{spverbatim}
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
 
+data = np.loadtxt("midterm_exam_data.txt")
+
+x_data = data[:, 0]
+y_data = data[:, 1]
+
+def cos_function(x_data, n):
+  """BUild the corresponding matrix by stacking 1, cos(x), etc."""
+  return np.column_stack(
+    [np.ones_like(x_data)] + 
+    [np.cos(k * x_data) for k in range(1, n + 1)]
+  )
+
+# Try for n-values up to 10
+fit_results = []
+result_summaries = []
+for n in range(0, 11):
+  fit_result = sm.OLS(y_data, cos_function(x_data, n)).fit()
+  fit_results.append(fit_result)
+
+  result_summaries.append({
+    "n": n,
+    "rss": fit_result.ssr,
+    "rse": np.sqrt(fit_result.scale),
+    "adj_r_2": fit_result.rsquared_adj,
+  })
+
+result_summary_df = pd.DataFrame(result_summaries).set_index("n").round(5)
+print(result_summary_df)
+
+# n = 5 seems reasonable, so plot and see
+plt.scatter(x_data, y_data)
+x_series = np.linspace(0, 3.5, 100)
+plt.plot(x_series, fit_results[5].predict(cos_function(x_series, 5)), color="red")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Residual plot for n = 5")
+plt.show()
+\end{spverbatim}
 
 \subsection*{(b)}
 Estimate the level of the noise. \\ \\
-
+The output from my script was as follows:
+\begin{spverbatim}
+Estimated noise standard deviation: 0.49819887898041026
+Estimated noise variance: 0.24820212301733746
+\end{spverbatim}
+from the following block of code at the bottom of my python script:
+\begin{spverbatim}
+# Print RSE as noise estimation 
+sigma = np.sqrt(fit_results[5].scale)
+print(f"Estimated noise standard deviation: {sigma}")
+print(f"Estimated noise variance: {sigma**2}")
+\end{spverbatim}
+The noise seems relatively low in terms of standard deviation. In addition, looking back at our table in part (a) with the RSE's seeming also relatively stable from \(n=5\) onwards, which also seems to indicate that the noise is relatively low.
 
 }
 {\Large 
