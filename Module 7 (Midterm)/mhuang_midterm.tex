@@ -45,16 +45,85 @@ From here, we aim to minimize \(D\) with respect to \(\boldsymbol{\mu}\) and \(\
 \[
   \int_{-\infty}^{\infty} f(\mathbf{x}) \log(g(\mathbf{x})) d \mathbf{x}
 \]
-which as hinted at by the expectations in terms of \(f(\mathbf{x})\) can be translated into 
+which as hinted at by the expectations in terms of \(f(\mathbf{x})\) (2.5 The Normal Density from Pattern Classification, by Duda, et al.), this can be translated into 
 \[
   = \mathbb{E}_{f(\mathbf{x})} [\log(g(\mathbf{x}))]
 \]
-We substitute in the definition for the multivariate normal distribution for \(g(\mathbf{x})\), as taken from 2.5.2: Multivariate Density in Pattern Classification, by Duda, et al.:
+We substitute in the definition for the multivariate normal distribution for \(g(\mathbf{x})\) (2.5.2: Multivariate Density from Pattern Classification, by Duda, et al.):
 \[
   = \mathbb{E}_{f(\mathbf{x})} [\log( \frac{1}{(2\pi)^{k / 2} |\boldsymbol{\Sigma}|^{1 / 2}} \exp(-\frac{1}{2} (\mathbf{x} - \boldsymbol{\mu})^T) \boldsymbol{\Sigma}^{-1} (\mathbf{x} - \boldsymbol{\mu}))]
 \]
-
-
+\[
+  = \mathbb{E}_{f(\mathbf{x})} [-\frac{k}{2} \log(2\pi) - \frac{1}{2} \log(|\boldsymbol{\Sigma}|) - \frac{1}{2}(\mathbf{x} - \boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x} - \boldsymbol{\mu})]
+\]
+which we now can effectively attempt to optimize with regards to \(\boldsymbol{\mu}\) and \(\boldsymbol{\Sigma}\). We take the gradient of each separately and setting equal to 0 to find the corresopnding critical points for maximizing the term:
+\[
+  \nabla_{\boldsymbol{\mu}} = \frac{\partial}{\partial \boldsymbol{\mu}} \mathbb{E}_{f(\mathbf{x})} [-\frac{k}{2} \log(2\pi) - \frac{1}{2} \log(|\boldsymbol{\Sigma}|) - \frac{1}{2}(\mathbf{x} - \boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x} - \boldsymbol{\mu})] = 0
+\]
+\[
+  \frac{\partial}{\partial \boldsymbol{\mu}} \mathbb{E}_{f(\mathbf{x})} [-\frac{k}{2} \log(2\pi) - \frac{1}{2} \log(|\boldsymbol{\Sigma}|) - \frac{1}{2}(\mathbf{x}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} - \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} - \mathbf{x}^T \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu} + \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu})] = 0
+\]
+\[
+  \frac{\partial}{\partial \boldsymbol{\mu}} \mathbb{E}_{f(\mathbf{x})} [-\frac{k}{2} \log(2\pi) - \frac{1}{2} \log(|\boldsymbol{\Sigma}|) - \frac{1}{2}(\mathbf{x}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} - 2 \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} + \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu})] = 0
+\]
+\[
+  \mathbb{E}_{f(\mathbf{x})} [0 - 0 - \frac{1}{2}(0 - 2 \boldsymbol{\Sigma}^{-1} \mathbf{x} + 2 \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu})] = 0
+\]
+\[
+  \mathbb{E}_{f(\mathbf{x})} [-\frac{1}{2}(- 2 \boldsymbol{\Sigma}^{-1} \mathbf{x} + 2 \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu})] = 0
+\]
+\[
+  \mathbb{E}_{f(\mathbf{x})} [\boldsymbol{\Sigma}^{-1} \mathbf{x} - \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}] = 0
+\]
+\[
+  \mathbb{E}_{f(\mathbf{x})} [\boldsymbol{\Sigma}^{-1} (\mathbf{x} - \boldsymbol{\mu})] = 0
+\]
+Since \(\boldsymbol{\Sigma}\) and \(\boldsymbol{\mu}\) are both not related to \(f(\mathbf{x})\):
+\[
+  \boldsymbol{\Sigma}^{-1} \mathbb{E}_{f(\mathbf{x})} [\mathbf{x}] - \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu} = 0
+\]
+\[
+  \boldsymbol{\Sigma}^{-1} \mathbb{E}_{f(\mathbf{x})} [\mathbf{x}] = \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}
+\]
+\[
+  \boxed{\boldsymbol{\mu} = \mathbb{E}_{f(\mathbf{x})} [\mathbf{x}]}
+\]
+exactly as we sought to find. Now moving onto taking the gradient with respect to \(\boldsymbol{\Sigma}\). From expanding the last term previously, we recognize that taking the function with regards to \(\boldsymbol{\Sigma}\) seems a bit painful, so it is easier to derive using \(\boldsymbol{\Sigma}^{-1}\) as done in 10.4.2. Case 2: All Parameters Unknown from Pattern Classification, by Duda, et al.:
+\[
+  \nabla_{\boldsymbol{\Sigma^{-1}}} = \frac{\partial}{\partial \boldsymbol{\Sigma^{-1}}} \mathbb{E}_{f(\mathbf{x})} [-\frac{k}{2} \log(2\pi) - \frac{1}{2} \log(|\boldsymbol{\Sigma}|) - \frac{1}{2}(\mathbf{x} - \boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x} - \boldsymbol{\mu})] = 0
+\]
+\[
+  \frac{\partial}{\partial \boldsymbol{\Sigma^{-1}}} \mathbb{E}_{f(\mathbf{x})} [-\frac{k}{2} \log(2\pi) - \frac{1}{2} \log(|\boldsymbol{\Sigma}|) - \frac{1}{2}(\mathbf{x}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} - \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} - \mathbf{x}^T \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu} + \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu})] = 0
+\]
+\[
+  \frac{\partial}{\partial \boldsymbol{\Sigma^{-1}}} \mathbb{E}_{f(\mathbf{x})} [-\frac{k}{2} \log(2\pi) + \frac{1}{2} \log(|\boldsymbol{\Sigma}^{-1}|) - \frac{1}{2}(\mathbf{x}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} - 2 \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} + \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu})] = 0
+\]
+\[
+  \mathbb{E}_{f(\mathbf{x})} [0 + \frac{1}{2} \cdot \frac{\partial}{\partial \boldsymbol{\Sigma^{-1}}} ( \log(|\boldsymbol{\Sigma}^{-1}|) - (\mathbf{x}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} - 2 \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} + \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}))] = 0
+\]
+\[
+  \mathbb{E}_{f(\mathbf{x})} [\frac{1}{2}  ( |\boldsymbol{\Sigma}^{-1}|^{-T} - \frac{\partial}{\partial \boldsymbol{\Sigma^{-1}}} (\mathbf{x}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} - 2 \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} + \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}))] = 0
+\]
+\[
+  \mathbb{E}_{f(\mathbf{x})} [\frac{1}{2} (\boldsymbol{\Sigma} - \frac{\partial}{\partial \boldsymbol{\Sigma^{-1}}} (\mathbf{x}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} - 2 \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \mathbf{x} + \boldsymbol{\mu}^T \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}))] = 0
+\]
+\[
+  \mathbb{E}_{f(\mathbf{x})} [\frac{1}{2} (\boldsymbol{\Sigma} - (\mathbf{x} \mathbf{x}^T - 2 \mathbf{x} \boldsymbol{\mu}^T + \boldsymbol{\mu} \boldsymbol{\mu}^T ))] = 0
+\]
+\[
+  \mathbb{E}_{f(\mathbf{x})} [\frac{1}{2} (\boldsymbol{\Sigma} - (\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^T)] = 0
+\]
+Again, as \(\boldsymbol{\mu}\) is not related to \(\mathbf{x}\):
+\[
+  \frac{1}{2} \boldsymbol{\Sigma} - \frac{1}{2} \mathbb{E}_{f(\mathbf{x})} [(\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^T ] = 0
+\]
+\[
+  \frac{1}{2} \boldsymbol{\Sigma} = \frac{1}{2} \mathbb{E}_{f(\mathbf{x})} [(\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^T ]
+\]
+\[
+  \boxed{\boldsymbol{\Sigma} = \mathbb{E}_{f(\mathbf{x})} [(\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^T]}
+\]
+exactly as we sought to find. 
 
 }
 {\Large 
