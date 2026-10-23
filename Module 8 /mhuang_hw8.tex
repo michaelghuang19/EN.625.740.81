@@ -141,6 +141,69 @@ Looking at our table in part (a), the RSE values stabilize significantly once th
 
 \section*{4.}
 Let \(r = \text{Cor}(X, Y)\) in equation (3.18) on page 70 of \textbf{An Introduction to Statistical Learning with R}, Second Edition. Show that for simple linear regression, \(R^2 = r^2\). \\ \\
+The equation we're referring to is 
+\[
+  \text{Cor}(X, Y) = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}} 
+\]
+We thus have this as \(r^2\) with \(r = \text{Cor}(X, Y)\):
+\[
+  r^2 = (\frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}})^2
+\]
+\[
+  r^2 = \frac{(\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}))^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+We aim to get to this result. Let's start with \(R^2\). We know from the text by definition that
+\[
+  R^2 = \frac{\text{TSS} - \text{RSS}}{\text{TSS}} = 1 - \frac{\text{RSS}}{\text{TSS}}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+Substituting in the prediction equation for the linear model for \(Y\):
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i))^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - (\bar{y} - \hat{\beta}_1 \bar{x} + \hat{\beta}_1 x_i))^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - (\bar{y} - \hat{\beta}_1(x_i - \bar{x})))^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - \bar{y} + \hat{\beta}_1(x_i - \bar{x}))^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}((y_i - \bar{y}) + \hat{\beta}_1(x_i - \bar{x}))^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - \bar{y})^2 - 2 \hat{\beta}_1(x_i - \bar{x})(y_i - \bar{y}) + \hat{\beta}_1^2 (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n} (y_i - \bar{y})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2} + \frac{\sum_{i=1}^{n} 2 \hat{\beta}_1(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (y_i - \bar{y})^2} - \frac{\sum_{i=1}^{n} \hat{\beta}_1^2 (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - 1 + \frac{2 \hat{\beta}_1 \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (y_i - \bar{y})^2} - \frac{\hat{\beta}_1^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+From the equations in 3.4 for the least squares approach for these beta values to minimize the RSS:
+\[
+  = \frac{2 \hat{\beta}_1 \cdot \hat{\beta}_1 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2} - \frac{\hat{\beta}_1^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = \frac{2 \hat{\beta}_1^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2} - \frac{\hat{\beta}_1^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = \frac{\hat{\beta}_1^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = \frac{(\frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2})^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = \frac{(\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}))^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{(\sum_{i=1}^{n} (x_i - \bar{x})^2)^2\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  R^2 = \frac{(\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}))^2 }{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+which is exactly equal to the result of \(r^2\) that we aimed to solve for; we thus have shown that \(R^2 = r^2\) for simple linear regression.
 
 }
 
