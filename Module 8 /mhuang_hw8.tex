@@ -23,7 +23,17 @@
 {\Large 
 
 \section*{1.}
+Show that, if \(x, y\) are jointly Gaussian, the regression of \(y\) on \(x\) is given by 
+\[
+  E(y | x) = \frac{\alpha \sigma_y x}{\sigma_x} + \mu_y - \frac{\alpha \sigma_y \mu_x}{\sigma_x}, 
+\]
+where \(\Sigma = \begin{pmatrix}
+\sigma^2_x & \alpha \sigma_x \sigma_y \\
+\alpha \sigma_x \sigma_y & \sigma_y^2 \\
+\end{pmatrix}.\) \\ \\
 
+
+% By definition, we know from the \(\sigma\) matrix that the covariance between \(x\) and \(y\) is \(\alpha \sigma_x \sigma_y\), and that the respective variances are \(\sigma_x^2\) and \(\sigma_y^2\). We also know that by definition, for two jointly Gaussian variables,  
 
 }
 {\Large 
@@ -37,18 +47,90 @@ where \(E(v_i | X_i) = 0\) and \(\text{Var}(v_i | X_i) = \sigma^2\).
 
 \subsection*{(a)} 
 Find \(\hat{\beta}\), the least squares estimate for \(\beta\). \\ \\
-
+For least squares, we have \(\epsilon_i = y_i - \hat{y}_i = y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i = y_i - \hat{\beta}_1 x_i\), since the model goes through the origin, so the \(\beta_0\) is 0. We define RSS to be 
+\[
+  R = \sum_{i=1}^{n} \epsilon_i^2
+\]
+\[
+  R = \sum_{i=1}^{n} (y_i - \hat{\beta}_1 x_i)^2
+\]
+We differentiate to find the minimum:
+\[
+  \frac{dR}{d\beta} = \frac{d}{d\beta} \sum_{i=1}^{n} (y_i - \hat{\beta}_1 x_i)^2
+\]
+\[
+  = \sum_{i=1}^{n} 2 (y_i - \hat{\beta}_1 x_i) \cdot -x_i
+\]
+\[
+  = -2 \sum_{i=1}^{n} x_i (y_i - \hat{\beta}_1 x_i)
+\]
+Set to 0 and solve accordingly:
+\[
+  0 = -2 \sum_{i=1}^{n} x_i (y_i - \hat{\beta}_1 x_i)
+\]
+\[
+  0 = -2 \sum_{i=1}^{n} x_i y_i - \hat{\beta}_1 x_i^2
+\]
+\[
+  0 = -2 \sum_{i=1}^{n} x_i y_i + 2 \sum_{i=1}^{n} \hat{\beta}_1 x_i^2
+\]
+\[
+  \sum_{i=1}^{n} x_i y_i = \sum_{i=1}^{n} \hat{\beta}_1 x_i^2
+\]
+\[
+  \sum_{i=1}^{n} x_i y_i = \hat{\beta}_1 \sum_{i=1}^{n} x_i^2
+\]
+\[
+  \boxed{\hat{\beta} = \frac{\sum_{i=1}^{n} x_i y_i}{\sum_{i=1}^{n} x_i^2}}
+\]
 
 \subsection*{(b)}
 Find the standard error of the estimate, \(\sqrt{\text{Var}(\hat{\beta}).}\) \\ \\
-
+As given in the problem, the standard error is \(\sqrt{\text{Var}(\hat{\beta})}\), so begin by substituting in our found value from part (a):
+\[
+  SE = \sqrt{\text{Var}(\hat{\beta})}
+\]
+\[
+  = \sqrt{\text{Var}(\frac{\sum_{i=1}^{n} x_i y_i}{\sum_{i=1}^{n} x_i^2})}
+\]
+We pull out the the \(x_i\) denominator term because these simply represent the given data's observed independent values which we condition on, as given in the problem with the conditional expectations and variances:
+\[
+  = \frac{1}{\sum_{i=1}^{n} x_i^2} \sqrt{\text{Var}(\sum_{i=1}^{n} x_i y_i)}
+\]
+\[
+  = \frac{1}{\sum_{i=1}^{n} x_i^2} \sqrt{\sum_{i=1}^{n} \text{Var}(x_i y_i)}
+\]
+\[
+  = \frac{1}{\sum_{i=1}^{n} x_i^2} \sqrt{\sum_{i=1}^{n} x_i^2 \text{Var}(y_i)}
+\]
+From the problem, we are given that \(\text{Var}(v_i | X_i) = \sigma^2\), and from the structure of the model as \(Y_i = \beta X_i + v_i\), we can extrapolate from that \(\text{Var}(Y_i | X_i) = \sigma^2\) as well since the two terms extraneous of of the \(X_i\) term are equal, since the variance of the \(X_i\) term given \(X_i\)  is  assuming independent samples. 
+\[
+  = \frac{1}{\sum_{i=1}^{n} x_i^2} \sqrt{\sum_{i=1}^{n} x_i^2 \sigma^2}
+\]
+\[
+  = \frac{\sigma}{\sum_{i=1}^{n} x_i^2} \sqrt{\sum_{i=1}^{n} x_i^2}
+\]
+\[
+  \boxed{SE = \frac{\sigma}{\sqrt{\sum_{i=1}^{n} x_i^2}}}
+\]
 
 \subsection*{(c)}
 Find conditions that guarantee that the estimate is consistent: 
 \[
   \forall \epsilon > 0, P(|\hat{\beta} - \beta| > \epsilon) \to 0 \text{ as } n \to \infty.
 \] \\
-
+The structure of the inequality reminds us of Chebyshev's inequality, which tells us that 
+\[
+  P(|X - \mu| > \alpha) \leq \frac{\sigma^2}{\alpha^2}
+\]
+Substituting our actual variance in for \(\sigma^2\) and \(\alpha = \epsilon\), etc.:
+\[
+  P(|\hat{\beta} - \beta| > \epsilon) \leq \frac{\sigma^2}{\epsilon^2 \sum_{i=1}^{n} x_i^2}
+\]
+We now evaluate to try to see where the probability approaches 0. For this probability to approach 0, we note that with some finite \(\sigma\) and \(\epsilon\) value, then these can essentially be treated asymptotically as constants. We are therefore just left with the sum of the squared \(X_i\) terms. To get to 0, then the denominator must approach infinity. Therefore, the condition is that 
+\[
+  \boxed{\lim_{n \to \infty} \sum_{i=1}^{n} x_i^2 = \infty}
+\]
 
 }
 {\Large 
