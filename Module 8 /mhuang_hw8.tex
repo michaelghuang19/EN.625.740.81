@@ -31,9 +31,57 @@ where \(\Sigma = \begin{pmatrix}
 \sigma^2_x & \alpha \sigma_x \sigma_y \\
 \alpha \sigma_x \sigma_y & \sigma_y^2 \\
 \end{pmatrix}.\) \\ \\
-
-
-% By definition, we know from the \(\sigma\) matrix that the covariance between \(x\) and \(y\) is \(\alpha \sigma_x \sigma_y\), and that the respective variances are \(\sigma_x^2\) and \(\sigma_y^2\). We also know that by definition, for two jointly Gaussian variables,  
+By definition, we know from the \(\sigma\) matrix that the covariance between \(x\) and \(y\) is \(\alpha \sigma_x \sigma_y\), and that the respective variances are \(\sigma_x^2\) and \(\sigma_y^2\). We can then use this to get our \(\hat{\beta}_1\), that is, since we have 
+\[
+  \hat{\beta}_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x}) (y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2} = \frac{\text{Cov}(x, y)}{\text{Var}(x)}
+\] 
+Plugging in, this gives us that 
+\[
+  \hat{\beta}_1 = \frac{\alpha \sigma_x \sigma_y}{\sigma_x^2} = \frac{\alpha \sigma_y}{\sigma_x}
+\]
+which gives us that part of the regression. We now need to find the rest of it that is the part not explained by the slope multiplied by the \(x\) value. We can represent this as \(y - \beta x\). We know that since \(x, y\) are jointly Gaussian, then any linear combination of the two is also jointly Gaussian. So we can say that \(x\) and \(y - \beta x\) are also jointly Gaussian. Our end goal is to incorporate this \(y - \beta x\) term into the final expectation with it seeming relevant to the final result, with \(E(y | x) = E((y - \beta x) + \beta x | x)\). We can cleverly find the following: 
+\[
+  \text{Cov}(y - \beta x, x) = \text{Cov}(y, x) - \text{Cov}(\beta x, x)
+\]
+\[
+  = \text{Cov}(y, x) - \beta \text{Cov}(x, x)
+\]
+\[
+  = \text{Cov}(y, x) - \beta \text{Var}(x)
+\]
+and substituting in the values we've previously found:
+\[
+  = \alpha \sigma_x \sigma_y - \frac{\alpha \sigma_y}{\sigma_x} \cdot \sigma_x^2
+\]
+\[
+  = \alpha \sigma_x \sigma_y - \alpha \sigma_y \sigma_x
+\]
+\[
+  = 0
+\]
+So therefore \(y - \beta x\) and \(x\) are independent. Back to our expectation equation, we can therefore simplify this massively:
+\[
+  E(y | x) = E((y - \beta x) + \beta x | x)
+\]
+\[
+  = E(y - \beta x | x) + E(\beta x | x)
+\]
+\[
+  = E(y - \beta x) + \beta x
+\]
+\[
+  = E(y) - E(\beta x) + \beta x
+\]
+\[
+  = \mu_y - \beta E(x) + \beta x
+\]
+\[
+  = \mu_y - \frac{\alpha \sigma_y}{\sigma_x} \mu_x + \frac{\alpha \sigma_y}{\sigma_x} x
+\]
+\[
+  E(y | x) = \frac{\alpha \sigma_y x}{\sigma_x} + \mu_y - \frac{\alpha \sigma_y \mu_x}{\sigma_x} 
+\]
+exactly as we sought to find. 
 
 }
 {\Large 
@@ -150,10 +198,10 @@ n
 5  3.232150e+06  185.43078  0.98913
 6  3.212240e+06  185.84997  0.98908
 \end{spverbatim}
-From this, it seems that \(n = 5\) is a good fit since the RSS, RSE and R squared all stop significantly improving around then. We can also check by plotting to see about the fit, which looks pretty good:
+From this, it seems that \(n = 5\) is a good fit since the RSS, RSE and R squared all stop significantly improving around then. We can also check by plotting to see about the fit, which looks pretty good: \\
 \begin{figure}[h!]
   \includegraphics[width=400pt]{problem_3_a_plot.png}
-\end{figure} \\ 
+\end{figure} \\
 This is the corresponding Python code:
 \begin{spverbatim}
 import matplotlib.pyplot as plt
