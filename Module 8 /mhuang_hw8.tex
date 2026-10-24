@@ -1,0 +1,340 @@
+\documentclass{article}
+\linespread{1.3}
+\usepackage[margin=50pt, headheight=60pt, headsep=0pt]{geometry}
+\usepackage{amsmath, amssymb, amsthm, tikz, fancyhdr, float, graphicx, spverbatim, systeme}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\newcommand{\changefont}{\fontsize{15}{15}\selectfont}
+
+\fancypagestyle{firstpageheader}{
+  \fancyhead[R]{
+    \changefont
+    \parbox[t]{4cm}{ % Adjust width as needed
+      Michael Huang\\
+      EN.625.740.81\\
+      Homework 8
+    }
+  }
+}
+
+\begin{document}
+
+\thispagestyle{firstpageheader}
+{\Large 
+
+\section*{1.}
+Show that, if \(x, y\) are jointly Gaussian, the regression of \(y\) on \(x\) is given by 
+\[
+  E(y | x) = \frac{\alpha \sigma_y x}{\sigma_x} + \mu_y - \frac{\alpha \sigma_y \mu_x}{\sigma_x}, 
+\]
+where \(\Sigma = \begin{pmatrix}
+\sigma^2_x & \alpha \sigma_x \sigma_y \\
+\alpha \sigma_x \sigma_y & \sigma_y^2 \\
+\end{pmatrix}.\) \\ \\
+By definition, we know from the \(\sigma\) matrix that the covariance between \(x\) and \(y\) is \(\alpha \sigma_x \sigma_y\), and that the respective variances are \(\sigma_x^2\) and \(\sigma_y^2\). We can then use this to get our \(\hat{\beta}_1\), that is, since we have 
+\[
+  \hat{\beta}_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x}) (y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2} = \frac{\text{Cov}(x, y)}{\text{Var}(x)}
+\] 
+Plugging in, this gives us that 
+\[
+  \hat{\beta}_1 = \frac{\alpha \sigma_x \sigma_y}{\sigma_x^2} = \frac{\alpha \sigma_y}{\sigma_x}
+\]
+which gives us that part of the regression. We now need to find the rest of it that is the part not explained by the slope multiplied by the \(x\) value. We can represent this as \(y - \beta x\). We know that since \(x, y\) are jointly Gaussian, then any linear combination of the two is also jointly Gaussian. So we can say that \(x\) and \(y - \beta x\) are also jointly Gaussian. Our end goal is to incorporate this \(y - \beta x\) term into the final expectation with it seeming relevant to the final result, with \(E(y | x) = E((y - \beta x) + \beta x | x)\). We can cleverly find the following: 
+\[
+  \text{Cov}(y - \beta x, x) = \text{Cov}(y, x) - \text{Cov}(\beta x, x)
+\]
+\[
+  = \text{Cov}(y, x) - \beta \text{Cov}(x, x)
+\]
+\[
+  = \text{Cov}(y, x) - \beta \text{Var}(x)
+\]
+and substituting in the values we've previously found:
+\[
+  = \alpha \sigma_x \sigma_y - \frac{\alpha \sigma_y}{\sigma_x} \cdot \sigma_x^2
+\]
+\[
+  = \alpha \sigma_x \sigma_y - \alpha \sigma_y \sigma_x
+\]
+\[
+  = 0
+\]
+So therefore \(y - \beta x\) and \(x\) are independent. Back to our expectation equation, we can therefore simplify this massively:
+\[
+  E(y | x) = E((y - \beta x) + \beta x | x)
+\]
+\[
+  = E(y - \beta x | x) + E(\beta x | x)
+\]
+\[
+  = E(y - \beta x) + \beta x
+\]
+\[
+  = E(y) - E(\beta x) + \beta x
+\]
+\[
+  = \mu_y - \beta E(x) + \beta x
+\]
+\[
+  = \mu_y - \frac{\alpha \sigma_y}{\sigma_x} \mu_x + \frac{\alpha \sigma_y}{\sigma_x} x
+\]
+\[
+  E(y | x) = \frac{\alpha \sigma_y x}{\sigma_x} + \mu_y - \frac{\alpha \sigma_y \mu_x}{\sigma_x} 
+\]
+exactly as we sought to find. 
+
+}
+{\Large 
+
+\section*{2.}
+Given data \((X_1, Y_1), \dots, (X_n, Y_n)\), consider the regression through the origin model
+\[
+  Y_i = \beta X_i + v_i, 
+\]
+where \(E(v_i | X_i) = 0\) and \(\text{Var}(v_i | X_i) = \sigma^2\).
+
+\subsection*{(a)} 
+Find \(\hat{\beta}\), the least squares estimate for \(\beta\). \\ \\
+For least squares, we have \(\epsilon_i = y_i - \hat{y}_i = y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i = y_i - \hat{\beta}_1 x_i\), since the model goes through the origin, so the \(\beta_0\) is 0. We define RSS to be 
+\[
+  R = \sum_{i=1}^{n} \epsilon_i^2
+\]
+\[
+  R = \sum_{i=1}^{n} (y_i - \hat{\beta}_1 x_i)^2
+\]
+We differentiate to find the minimum:
+\[
+  \frac{dR}{d\beta} = \frac{d}{d\beta} \sum_{i=1}^{n} (y_i - \hat{\beta}_1 x_i)^2
+\]
+\[
+  = \sum_{i=1}^{n} 2 (y_i - \hat{\beta}_1 x_i) \cdot -x_i
+\]
+\[
+  = -2 \sum_{i=1}^{n} x_i (y_i - \hat{\beta}_1 x_i)
+\]
+Set to 0 and solve accordingly:
+\[
+  0 = -2 \sum_{i=1}^{n} x_i (y_i - \hat{\beta}_1 x_i)
+\]
+\[
+  0 = -2 \sum_{i=1}^{n} x_i y_i - \hat{\beta}_1 x_i^2
+\]
+\[
+  0 = -2 \sum_{i=1}^{n} x_i y_i + 2 \sum_{i=1}^{n} \hat{\beta}_1 x_i^2
+\]
+\[
+  \sum_{i=1}^{n} x_i y_i = \sum_{i=1}^{n} \hat{\beta}_1 x_i^2
+\]
+\[
+  \sum_{i=1}^{n} x_i y_i = \hat{\beta}_1 \sum_{i=1}^{n} x_i^2
+\]
+\[
+  \boxed{\hat{\beta} = \frac{\sum_{i=1}^{n} x_i y_i}{\sum_{i=1}^{n} x_i^2}}
+\]
+
+\subsection*{(b)}
+Find the standard error of the estimate, \(\sqrt{\text{Var}(\hat{\beta}).}\) \\ \\
+As given in the problem, the standard error is \(\sqrt{\text{Var}(\hat{\beta})}\), so begin by substituting in our found value from part (a):
+\[
+  SE = \sqrt{\text{Var}(\hat{\beta})}
+\]
+\[
+  = \sqrt{\text{Var}(\frac{\sum_{i=1}^{n} x_i y_i}{\sum_{i=1}^{n} x_i^2})}
+\]
+We pull out the the \(x_i\) denominator term because these simply represent the given data's observed independent values which we condition on, as given in the problem with the conditional expectations and variances:
+\[
+  = \frac{1}{\sum_{i=1}^{n} x_i^2} \sqrt{\text{Var}(\sum_{i=1}^{n} x_i y_i)}
+\]
+\[
+  = \frac{1}{\sum_{i=1}^{n} x_i^2} \sqrt{\sum_{i=1}^{n} \text{Var}(x_i y_i)}
+\]
+\[
+  = \frac{1}{\sum_{i=1}^{n} x_i^2} \sqrt{\sum_{i=1}^{n} x_i^2 \text{Var}(y_i)}
+\]
+From the problem, we are given that \(\text{Var}(v_i | X_i) = \sigma^2\), and from the structure of the model as \(Y_i = \beta X_i + v_i\), we can extrapolate from that \(\text{Var}(Y_i | X_i) = \sigma^2\) as well since the two terms extraneous of of the \(X_i\) term are equal, since the variance of the \(X_i\) term given \(X_i\)  is  assuming independent samples. 
+\[
+  = \frac{1}{\sum_{i=1}^{n} x_i^2} \sqrt{\sum_{i=1}^{n} x_i^2 \sigma^2}
+\]
+\[
+  = \frac{\sigma}{\sum_{i=1}^{n} x_i^2} \sqrt{\sum_{i=1}^{n} x_i^2}
+\]
+\[
+  \boxed{SE = \frac{\sigma}{\sqrt{\sum_{i=1}^{n} x_i^2}}}
+\]
+
+\subsection*{(c)}
+Find conditions that guarantee that the estimate is consistent: 
+\[
+  \forall \epsilon > 0, P(|\hat{\beta} - \beta| > \epsilon) \to 0 \text{ as } n \to \infty.
+\] \\
+The structure of the inequality reminds us of Chebyshev's inequality, which tells us that 
+\[
+  P(|X - \mu| > \alpha) \leq \frac{\sigma^2}{\alpha^2}
+\]
+Substituting our actual variance in for \(\sigma^2\) and \(\alpha = \epsilon\), etc.:
+\[
+  P(|\hat{\beta} - \beta| > \epsilon) \leq \frac{\sigma^2}{\epsilon^2 \sum_{i=1}^{n} x_i^2}
+\]
+We now evaluate to try to see where the probability approaches 0. For this probability to approach 0, we note that with some finite \(\sigma\) and \(\epsilon\) value, then these can essentially be treated asymptotically as constants. We are therefore just left with the sum of the squared \(X_i\) terms. To get to 0, then the denominator must approach infinity. Therefore, the condition is that 
+\[
+  \boxed{\lim_{n \to \infty} \sum_{i=1}^{n} x_i^2 = \infty}
+\]
+
+}
+{\Large 
+
+\section*{3.}
+The columns in the file \texttt{polynomial\_data.txt} are the \(X\) and \(Y\) values of a polynomial function \(y = \sum_{k=0}^{n} a_k x^k\) with added Gaussian noise. 
+
+\subsection*{(a)} 
+For each \(n \in \{3, 4, 5, 6\}\), fit an \(n^{\text{th}}\) degree polynomial to the data. What would you say is the most likely value of \(n\)? \\ \\
+I ran the Python script below and got the following output:
+\begin{spverbatim}
+> python problem_3.py
+            rss        rse  adj_r_2
+n                                  
+3  1.122068e+07  341.88019  0.96305
+4  1.121543e+07  343.59444  0.96268
+5  3.232150e+06  185.43078  0.98913
+6  3.212240e+06  185.84997  0.98908
+\end{spverbatim}
+From this, it seems that \(n = 5\) is a good fit since the RSS, RSE and R squared all stop significantly improving around then. We can also check by plotting to see about the fit, which looks pretty good: \\
+\begin{figure}[h!]
+  \includegraphics[width=400pt]{problem_3_a_plot.png}
+\end{figure} \\
+This is the corresponding Python code:
+\begin{spverbatim}
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+
+data = np.loadtxt("polynomial_data.txt")
+
+N_VALUES = [3, 4, 5, 6]
+
+x_data = data[:, 0]
+y_data = data[:, 1]
+
+def poly_function(x_data, n):
+  """Build the corresponding matrix by stacking 1, x, x^2, etc."""
+  return np.column_stack(
+    [x_data**k for k in range(n + 1)]
+  )
+
+fit_results = []
+result_summaries = []
+
+for n in N_VALUES:
+  fit_result = sm.OLS(y_data, poly_function(x_data, n)).fit()
+  fit_results.append(fit_result)
+
+  result_summaries.append({
+    "n": n,
+    "rss": fit_result.ssr,
+    "rse": np.sqrt(fit_result.scale),
+    "adj_r_2": fit_result.rsquared_adj,
+  })
+
+result_summary_df = pd.DataFrame(result_summaries).set_index("n").round(5)
+print(result_summary_df)
+
+# n = 5 seems good enough, so plot and see
+plt.scatter(x_data, y_data)
+x_series = np.linspace(min(x_data), max(x_data), 100)
+# Index 2 in fit_results since n_values = [3, 4, 5, 6]
+plt.plot(x_series, fit_results[2].predict(poly_function(x_series, 5)), color="red")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Fit for n = 5")
+plt.show()
+\end{spverbatim}
+
+\subsection*{(b)}
+Estimate the level of the noise. \\ \\
+The output from my script was as follows:
+\begin{spverbatim}
+Estimated noise standard deviation: 185.43077663414547
+Estimated noise variance: 34384.572923142354
+\end{spverbatim}
+This was from the following block of code at the bottom of my python script:
+\begin{spverbatim}
+# Print RSE as noise estimation for n = 5
+sigma = np.sqrt(fit_results[2].scale)
+print(f"Estimated noise standard deviation: {sigma}")
+print(f"Estimated noise variance: {sigma**2}")
+\end{spverbatim}
+Looking at our table in part (a), the RSE values stabilize significantly once the model complexity reaches \(n=5\). I chose to use RSE as a measure of noise used as established in the text. Comparing this noise to the plot and the mean values of \(y\), it seems that this RSE with standard deviation of approximately 185 is relatively low compared to the \(y\)-values in the thousands.
+
+}
+{\Large 
+
+\section*{4.}
+Let \(r = \text{Cor}(X, Y)\) in equation (3.18) on page 70 of \textbf{An Introduction to Statistical Learning with R}, Second Edition. Show that for simple linear regression, \(R^2 = r^2\). \\ \\
+The equation we're referring to is 
+\[
+  \text{Cor}(X, Y) = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}} 
+\]
+We thus have this as \(r^2\) with \(r = \text{Cor}(X, Y)\):
+\[
+  r^2 = (\frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}})^2
+\]
+\[
+  r^2 = \frac{(\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}))^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+We aim to get to this result. Let's start with \(R^2\). We know from the text by definition that
+\[
+  R^2 = \frac{\text{TSS} - \text{RSS}}{\text{TSS}} = 1 - \frac{\text{RSS}}{\text{TSS}}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+Substituting in the prediction equation for the linear model for \(Y\):
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i))^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - (\bar{y} - \hat{\beta}_1 \bar{x} + \hat{\beta}_1 x_i))^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - (\bar{y} - \hat{\beta}_1(x_i - \bar{x})))^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - \bar{y} + \hat{\beta}_1(x_i - \bar{x}))^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}((y_i - \bar{y}) + \hat{\beta}_1(x_i - \bar{x}))^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n}(y_i - \bar{y})^2 - 2 \hat{\beta}_1(x_i - \bar{x})(y_i - \bar{y}) + \hat{\beta}_1^2 (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - \frac{\sum_{i=1}^{n} (y_i - \bar{y})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2} + \frac{\sum_{i=1}^{n} 2 \hat{\beta}_1(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (y_i - \bar{y})^2} - \frac{\sum_{i=1}^{n} \hat{\beta}_1^2 (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = 1 - 1 + \frac{2 \hat{\beta}_1 \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (y_i - \bar{y})^2} - \frac{\hat{\beta}_1^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+From the equations in 3.4 for the least squares approach for these beta values to minimize the RSS:
+\[
+  = \frac{2 \hat{\beta}_1 \cdot \hat{\beta}_1 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2} - \frac{\hat{\beta}_1^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = \frac{2 \hat{\beta}_1^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2} - \frac{\hat{\beta}_1^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = \frac{\hat{\beta}_1^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = \frac{(\frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2})^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  = \frac{(\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}))^2 \sum_{i=1}^{n} (x_i - \bar{x})^2}{(\sum_{i=1}^{n} (x_i - \bar{x})^2)^2\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+\[
+  R^2 = \frac{(\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}))^2 }{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}
+\]
+which is exactly equal to the result of \(r^2\) that we aimed to solve for; we thus have shown that \(R^2 = r^2\) for simple linear regression.
+
+}
+
+\end{document}
