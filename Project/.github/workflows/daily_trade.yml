@@ -1,0 +1,46 @@
+name: Daily trade
+
+# Scheduled live daily run of the trade
+on:
+  schedule:
+    # Target 2:30 PM ET, with a 2:45 retry. These are all UTC, so account for Daylight Savings
+    - cron: "30 18 * * 1-5"
+    - cron: "45 18 * * 1-5"
+    - cron: "30 19 * * 1-5"
+    - cron: "45 19 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trading
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install package dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run the daily scheduled model decision
+        run: python run_daily.py
+
+      - name: Commit ledger, models and live results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p ledger models live
+          git add ledger models live
+          git diff --cached --quiet || git commit -m "Trade bot update: $(TZ=America/New_York date '+%Y-%m-%d %H:%M') ET"
+          git push

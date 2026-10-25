@@ -1,0 +1,64 @@
+name: Manual run
+
+# Manual runs of the model, with all options (training, backfilling, etc.)
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "train (fit models), backfill (for any missing days), dry-run, trade, page (reload the live results page), scheduled"
+        default: dry-run
+        type: choice
+        options: [train, backfill, dry-run, trade, page, scheduled]
+      date:
+        description: "dry-run: date to decide for; backfill: last day to replay until (leave blank for current day)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trading
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install package dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run
+        env:
+          MODE: ${{ github.event.inputs.mode }}
+          DATE: ${{ github.event.inputs.date }}
+        run: |
+          case "$MODE" in
+            train)     python run_daily.py --train ;;
+            backfill)  python run_daily.py --backfill ${DATE:+--until "$DATE"} ;;
+            dry-run)   python run_daily.py --dry-run ${DATE:+--as-of "$DATE"} ;;
+            trade)     python run_daily.py --force ;;
+            page)      python run_daily.py --page ;;
+            scheduled) python run_daily.py ;;
+          esac
+
+      - name: Commit results
+        env:
+          MODE: ${{ github.event.inputs.mode }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p ledger models live
+          git add ledger models live
+          git diff --cached --quiet || git commit -m "Manual $MODE run: $(TZ=America/New_York date '+%Y-%m-%d %H:%M') ET"
+          git push
