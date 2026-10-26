@@ -2,6 +2,7 @@ name: Daily trade
 
 # Scheduled live daily run of the trade
 on:
+  workflow_dispatch:
   schedule:
     # Target 2:30 PM ET, with a 2:45 retry. These are all UTC, so account for Daylight Savings
     - cron: "30 18 * * 1-5"
