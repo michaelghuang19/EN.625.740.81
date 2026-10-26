@@ -25,6 +25,9 @@ jobs:
   run:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: Project
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,6 +37,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
+          cache-dependency-path: Project/requirements.txt
 
       - name: Install package dependencies
         run: pip install -r requirements.txt
@@ -62,3 +66,4 @@ jobs:
           git add ledger models live
           git diff --cached --quiet || git commit -m "Manual $MODE run: $(TZ=America/New_York date '+%Y-%m-%d %H:%M') ET"
           git push
+
