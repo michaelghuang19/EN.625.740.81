@@ -1,0 +1,7 @@
+measure,value
+excess over both baskets so far,0.019890415068665623
+backtest: mean 24-day excess,0.0056
+backtest: 10th percentile,-0.0396
+backtest: 90th percentile,0.0469
+backtest: share of 24-day windows positive,0.57
+backtest: mean excess in past Oct 19-Nov 20 windows (beat in 11 of 16),0.0142

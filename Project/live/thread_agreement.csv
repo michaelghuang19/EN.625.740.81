@@ -1,0 +1,6 @@
+measure,live,backtest
+weeks,1.0,
+share of weeks the two agree,1.0,0.63
+model right when they agree,1.0,0.57
+model right when they disagree,,0.5
+momentum right overall,1.0,

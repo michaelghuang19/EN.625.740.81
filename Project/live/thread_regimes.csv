@@ -1,0 +1,7 @@
+date,market_up_12m,energy_beats_market_12m,clean_beats_traditional_12m,momentum_side,momentum_side_changed
+2026-10-19,True,True,False,XLE,False
+2026-10-20,True,True,False,XLE,False
+2026-10-21,True,True,False,XLE,False
+2026-10-22,True,True,False,XLE,False
+2026-10-23,True,True,False,XLE,False
+2026-10-26,True,True,False,,True
