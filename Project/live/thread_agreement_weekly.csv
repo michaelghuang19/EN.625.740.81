@@ -1,2 +1,3 @@
 week_of,model_side,momentum_side,agree,better_side,XLE_return,ICLN_return,model_right,momentum_right,complete
-2026-10-19,XLE,XLE,True,XLE,0.03414113452184786,-0.006377315318671584,True,True,True
+2026-10-19,XLE,XLE,True,XLE,0.03904174795473114,-0.010366561319783973,True,True,True
+2026-10-26,XLE,XLE,True,ICLN,-0.02112977662455806,0.0498293821125495,False,False,False
