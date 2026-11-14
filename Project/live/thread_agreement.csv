@@ -1,5 +1,5 @@
 measure,live,backtest
-weeks,2.0,
+weeks,4.0,
 share of weeks the two agree,1.0,0.63
 model right when they agree,0.5,0.57
 model right when they disagree,,0.5
