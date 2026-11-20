@@ -19,3 +19,7 @@ date,p_XLE,p_ICLN,model_side,momentum_side,target_XLE,target_ICLN,equity_est,act
 2026-11-11,0.6467,0.5748,XLE,XLE,1.0,0.0,94912.42,NO_TRADE,"mid-week, holding until the next weekly rebalance; today's signal: model and momentum agree on XLE",0,backfill
 2026-11-12,0.6579,0.5403,XLE,XLE,1.0,0.0,96166.35,NO_TRADE,"mid-week, holding until the next weekly rebalance; today's signal: model and momentum agree on XLE",0,backfill
 2026-11-13,0.6635,0.5476,XLE,XLE,1.0,0.0,97599.49,NO_TRADE,"mid-week, holding until the next weekly rebalance; today's signal: model and momentum agree on XLE",0,backfill
+2026-11-16,0.6481,0.5326,XLE,XLE,1.0,0.0,95261.93,TRADE,model and momentum agree on XLE,8,backfill
+2026-11-17,0.6534,0.5565,XLE,XLE,1.0,0.0,94270.58,NO_TRADE,"mid-week, holding until the next weekly rebalance; today's signal: model and momentum agree on XLE",0,backfill
+2026-11-18,0.7288,0.6497,XLE,XLE,1.0,0.0,90956.89,NO_TRADE,"mid-week, holding until the next weekly rebalance; today's signal: model and momentum agree on XLE",0,backfill
+2026-11-19,0.7247,0.6683,XLE,XLE,1.0,0.0,90734.72,NO_TRADE,"mid-week, holding until the next weekly rebalance; today's signal: model and momentum agree on XLE",0,backfill

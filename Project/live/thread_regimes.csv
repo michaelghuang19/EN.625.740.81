@@ -19,3 +19,8 @@ date,market_up_12m,energy_beats_market_12m,clean_beats_traditional_12m,momentum_
 2026-11-11,True,True,False,XLE,False
 2026-11-12,True,True,False,XLE,False
 2026-11-13,True,True,False,XLE,False
+2026-11-16,True,True,False,XLE,False
+2026-11-17,True,True,False,XLE,False
+2026-11-18,True,True,False,XLE,False
+2026-11-19,True,True,False,XLE,False
+2026-11-20,True,True,False,,True
