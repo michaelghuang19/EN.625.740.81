@@ -4,11 +4,10 @@ name: Daily trade
 on:
   workflow_dispatch:
   schedule:
-    # Target 2:30 PM ET, with a 2:45 retry. These are all UTC, so account for Daylight Savings
-    - cron: "30 14 * * 1-5"
-      timezone: "America/New_York"
-    - cron: "45 14 * * 1-5"
-      timezone: "America/New_York"
+    # 19:23 UTC = 2:23 PM EST (off-minute to avoid GitHub Actions queue spikes)
+    - cron: "23 19 * * 1-5"
+    # 19:41 UTC = 2:41 PM EST (retry)
+    - cron: "41 19 * * 1-5"
 
 
 permissions:
