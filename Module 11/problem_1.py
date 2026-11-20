@@ -4,7 +4,7 @@ training_data = np.loadtxt("hw_11_data.txt", delimiter=",")
 x_1 = training_data[:, 0]
 x_2 = training_data[:, 1]
 c = training_data[:, 2]
-# Translate lables to {-1, +1}
+# Translate labels to {-1, 1}
 y = np.where(c == 1, 1, -1)
 
 # z + 0 = 1, z_1 = x_1, z_2 = x_2, z_3 = x_1^2, z_4 = x_2^2, z_5 = x_1 x_2
